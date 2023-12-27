@@ -1,0 +1,60 @@
+[2일차 복습]
+3. 
+	SELECT *
+	FROM all_users
+	WHERE username = UPPER('hr'); -- 대문자로 변환
+	WHERE username = 'HR';
+
+비교 연산자
+	=
+	!=
+	^=
+	<>
+	<
+	>
+	<=
+	>=
+	ALL, ANY, SOME
+논리 연산자
+	AND, OR, NOT
+SQL 연산자
+	[NOT] IN, 
+	[NOT] BETWEEN a AND b
+	[NOT] like
+	IS [NOT] NULL 
+	ANY, SOME
+	ALL
+	EXISTS
+	IS OF type
+----------------------------------------------------------
+
+Inline 뷰
+인라인 뷰는 FROM 절에서 서브쿼리를 사용하여 생성한 임시 뷰이다. 인라인 뷰는 SQL 문이 실행되는 동안만 임시적으로 정의된다.
+? inline view에서 ORDER BY 절을 사용할 수 있다.
+
+참고로 서브쿼리가 FROM 절에 있으면 이를 Inline view라하고
+서브쿼리가 WHERE 절에 있으면 이를 Nested subquery라 하며
+Nested subquery중에서 참조하는 테이블이 parent, child관계를 가지면 이를 correlated subquery라 한다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

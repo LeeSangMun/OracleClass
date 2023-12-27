@@ -1,0 +1,181 @@
+1. 용어
+	1) 데이터(Data)
+		ㄱ. 재료·자료·논거(論據)라는 뜻인 'datum'의 복수형이다.
+		ㄴ. 넓은 의미에서 데이터는 의미 있는 정보를 가진 모든 값, 
+		    사람이나 자동 기기가 생성 또는 처리하는 형태로 표시된 것
+		ㄷ. 정보(infomation) - 의미를 부여한 값(결과)
+
+2. 데이터베이스(DataBase == DB)
+	ㄱ. 공유되어 사용될 목적으로 통합 관리되는 데이터의 집합
+	ㄴ. Data(자료) + Base(저장소)
+	ㄷ. 효과적으로 추출, 분류, 저장, 등등
+	ㄹ. 현실세계에 존재하는 유형, 무형 등 방대한 정보 집합
+	
+3. DBMS(DataBase  Management System) - 데이터 베이스 관리 시스템
+	ㄱ. 소프트웨어
+	ㄴ. Oracle, MySQL, MS SQL 등등
+	ㄷ. Oracle
+		- https://www.oracle.com/
+		[Oracle 11g XE - 설치방법]
+		- SQL Developer 다운로드
+		https://www.oracle.com/database/sqldeveloper/technologies/download/ 
+		- 오라클 XE 11g 다운로드
+		https://www.oracle.com/database/technologies/xe-prior-release-downloads.html
+		- 
+		https://docs.oracle.com/cd/E17781_01/index.htm
+
+		- 오라클 종류(edition) : EE, SE, SEO, XE(express)[무료], PE(개인용)
+		- 11g = grid
+		  21c = cloud
+		  9i = internet
+
+		- SYS, SYSTEM DBA 계정 : ss123$
+		
+4. Oracle 11g XE 설치 확인
+	- C:\oraclexe 폴더 생성 확인
+	- 제어판 - 시스템 및 보안 - 관리도구 - 서비스
+		1) OracleServiceXE		
+		    OracleService + SID(시스템식별자) -> XE로 잡힘
+		2) OracleXETNSListener	
+		    Oracle + SID + TNSListener
+
+5. 오라클[서버]에 연결해서 관리하는 [클라이언트 도구]
+	- SQL Developer 23.1 
+	- SQL*PLUS 툴
+	- 토드(Toad)
+	등등
+
+6. 데이터 모델 : 컴퓨터에 데이터를 저장하는 방식을 정의해 놓은 개념 모델
+	 - 데이터 모델의 종류 : 계층형, 네트워크형, [관계형], 객체지향적 등등
+		
+7. 관계형 데이터 모델 + DBMS = RDBMS
+	- 관계형 ? 데이터 간 관계에 초점을 둔 모델
+		  데이터 저장소(테이블)과 테이블 간 관계에 초점을 둔 모델
+
+8. 관계형 데이터 모델의 핵심 구성 요소
+	1) 개체(entity)		- 데이터를 저장하는 가장 작은 단위, RDBS(table == 릴레이션)
+	2) 속성(attrinute)		- 개체의 특징, 종류, 상태 // 컬럼(열)
+	3) 관계(relationship)	- 개체와 개체 간의 연관성
+
+	예) 부서의 정보를 저장할 개체(table) : dept
+		부서 개체가 가지고 있는 속성(column) : 부서번호, 부서명, 부서장 등등
+	     사원 개체(table) : employee
+		가지고 있는 속성(column) : 사원번호, 사업명, 입사
+	     한명의 사원은 반드시 하나의 부서에 소속이 된다.
+	     부서개체(table) 사원개체(table) 연관성(관계)
+
+9. DBA = DB(database) + A(adminstrator) = 데이터베이스 관리자
+	SYS	- 모든 권한 최고 DBA
+	SYSTEM	- DB 생성x
+
+10. 테이블 스페이스(tablespace)
+	1) 테이블(table) - 데이터를 저장하는 가장 작은 단위
+		행(ROW)==레코드
+	2) 논리적 단위 : 데이터 블록 < 익스텐트 < 세그먼트 < 테이블스페이스
+	3) 데이터 저장하는 단위 중 가장 상위의 개념 : 테이블 스페이스
+
+11. SID(시스템 식별자) == XE
+     전역 데이터베이스 이름 == XE
+     OracleXETNSListener - 네트워크를 통해서 클라이언트가 오라클 서버와 연결을 담당하는 관리 프로그램
+
+12. 오라클 삭제
+	1) 서비스 실행 - 오라클 관련 서비스 모두 중지
+	2) 메뉴 - uninstall or deinstall 클릭 // 무료버전이라 없음
+	   프로그램 추가/삭제 // Oracle 검색 후 제거 버튼 클릭
+	3) C:\oracleexe 설치 폴더 삭제
+	4) 레지스터리 삭제 - 레지스터리 편집기 실행 // 4군데 삭제해야 한다.
+	(1~4 오라클 완벽히 삭제)
+
+13. 클라이언트 도구(본인 PC) -> 연결 -> 오라클 서버(팀장 PC)
+	1) 1521 포트 방화벽 해제
+	2) C:\Users\user>sqlplus /?
+		ㄱ. SQL 실행
+		ㄴ. PL/SQL 실행
+		ㄷ. SQL*Plus 명령어 실행
+
+	사용형식)
+	sqlplus [ [<option>] [{logon | /nolog}] [<start>] ]
+
+	 <logon> is: {<username>[/<password>][@<connect_identifier>] | / }
+             [AS {SYSDBA | SYSOPER | SYSASM}] [EDITION=value]
+
+	<connect_identifier> 형식
+	- @[<net_service_name> | [//]Host[:Port]/<service_name>]
+
+	show user
+	select * from all_users;
+	sqlpus sys/ss 123$ as sysdba
+	sqlpus / 123$ as sysdba
+
+14. SQL Developer 23.1 
+
+15. SQL ? Structured Query Language(구조화된 질의 언어)
+	클라이언트 도구를 이용해 DB서버에 질의
+
+
+16. PL/SQL = PL(Procedural Language, 절차적인 언어 문법) + SQL 
+
+17. SQL 종류
+	1) DQL(Data Query Language)	- 조회		// SELECT
+	2) DDL(Data definition language) 	- 정의		// CREATE, DROP, ALTER
+	3) DML(Data manipulation languag)	- 조작		// INSERT, UPDATE, DELETE, RENAME, TRUNCATE
+		*** 조작 후 COMMIT, ROLLBACK 해야 한다. ***
+		
+	4) DCL(Data control language) 	- 권한		// GRANT, REVOKE
+	5) TCL(Transaction Control Language)	- 트랜잭션	// COMMIT, ROLLBACK, SAVEPOINT
+
+18. SQL 문장 작성법
+	- SQL 문장은 대소문자를 구별하지 않는다.
+	- SQL*Plus에서 SQL문장은 SQL프롬프트에 입력되며, 이후의 Line은 줄번호가 붙는다.
+	- SQL 명령을 종료할 때는 세미콜론(;)을 반드시 붙어야 한다.
+	- 맨 마지막 명령어 1개가 SQL buffer에 저장된다.
+	- SQL 문장은 한 줄 이상일 수 있다.
+	- SQL 명령어를 구성하고 있는 단어중 어디에서나 분리해도 된다.
+	- 한 개의 line에 한개의 절(select, from, where) 형태로 나누어 입력하는 것을 권한다.
+              그러나 한개의 단어를 두 줄로 나누어 입력해서는 안된다.
+	- keyword는 대문자로 입력하도록 권한다.
+	- 다른 모든 단어 즉, table 이름, column 이름은 소문자로 입력을 권한다.
+	- keyword는 단축하거나 줄로 나누어 쓸 수 없다.
+	- 절은 대개 줄을 나누어 쓰도고 권한다.
+	- 탭과 줄 넣기는 읽기 쉽게 하기 위해 사용을 권한다.
+
+
+19. 계정 생성(DDL - CREATE)
+	1) 관리자 계정으로 접속(SYS, SYSTEM)
+	scott[계정]
+	tiget 비밀번호
+
+20. scott 
+
+CREATE SESSION 권한이 없어서 로그인 실패
+해결방법) 권한을 부여할 수 있는 계정(SYS)이
+	CREATE SESSION 시스템권한을 scott 계정에게 부여
+	- DB 접속 연결 권한
+
+21. 권한(Privilege) 설명
+	1) 권한 정의
+	2) 권한 부여 방법
+		(1) DBA -> SCOTT
+		(2) DBA -> 롤(role) : 권한부여 -> 부여한 롤을 SCOTT 계정에 부여
+
+
+22. 권한의 종류
+	1) 시스템 권한	:	사용자 생성
+	2) 객체 권한
+
+	【형식】  // 권한 DCL문 
+     	GRANT 시스템권한명 또는 롤명 TO 사용자명 또는 롤명 또는 PUBLIC
+        	[WITH ADMIN OPTION];
+
+23. scott 계정 삭제
+
+24. 데이터베이스 객체 ? 데이터베이스 내에 존재하는 논리적인 저장 구조
+	예) 테이블, 뷰, 인덱스, 시노님, 시퀀스, 함수, 프로시저, 트리거, 패키지 등등
+
+25. scott 계정 생성 -> Schema scott 생성 : 모든 DB 객체들의 묶음(집합)
+
+
+
+롤이란 다수 사용자와 다양한 권한을 효과적으로 관리하기 위하여 서로 관련된 권한을 한데 묶은 그룹이다.
+DB에서 어떤 목적을 위하여 필요한 여러 개로 구성된 테이블들의 집합을 Schema라 한다.
+

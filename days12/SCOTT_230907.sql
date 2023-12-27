@@ -1,0 +1,50 @@
+DROP TABLE user_info;
+CREATE TABLE user_info(
+    user_id NVARCHAR2(20) CONSTRAINT pk_user_info_user_id PRIMARY KEY CHECK(LENGTH(user_id) >= 4)
+    , password NVARCHAR2(20) NOT NULL CHECK(LENGTH(password) >= 8)
+    , name NVARCHAR2(5) NOT NULL
+    , email NVARCHAR2(20) NOT NULL UNIQUE
+    , role NVARCHAR2(3) DEFAULT '일반' NOT NULL
+);
+
+DROP TABLE survey;
+CREATE TABLE survey (
+    survey_id NUMBER CONSTRAINT pk_servey_servey_id PRIMARY KEY
+    , writer NVARCHAR2(20) CONSTRAINT fk_survey_writer REFERENCES user_info(user_id) ON DELETE SET NULL NOT NULL 
+    , start_date DATE DEFAULT SYSDATE
+    , end_date DATE
+    , state VARCHAR2(10) DEFAULT '일반'
+    , survey_cnt VARCHAR2(10) DEFAULT 0
+);
+
+CREATE TABLE SURVEY
+(
+    SURVEY_ID NUMBER PRIMARY KEY NOT NULL 
+    ,USER_ID NVARCHAR2(20)
+    ,START_DATE DATE DEFAULT SYSDATE NOT NULL
+    ,END_DATE DATE NOT NULL
+    ,TITLE VARCHAR2(20) NOT NULL
+    ,STATE VARCHAR(20) DEFAULT '일반'
+    ,SURVEY_ALLCNT NUMBER(10) DEFAULT 0 
+    ,CONSTRAINT FK_SURVEY_USER_ID FOREIGN KEY(USER_ID) REFERENCES USER_INFO(user_id) ON DELETE SET NULL
+);
+
+DROP SEQUENCE servey_seq;
+CREATE SEQUENCE servey_seq
+START WITH 1
+INCREMENT BY 1
+MAXVALUE 10000
+MINVALUE 1
+NOCYCLE;
+  
+INSERT INTO user_info(user_id, password, name, email)
+VALUES('asdf1234', '12345678', '경재', 'asdf@123');
+  
+INSERT INTO survey(survey_id, writer, end_date, state)
+VALUES(NO_SEQ.NEXTVAL, 'asdf1234', '2023/08/23', '진행중');
+
+SELECT *
+FROM user_info;
+
+SELECT *
+FROM survey;

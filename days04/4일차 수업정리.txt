@@ -1,0 +1,10 @@
+4일차 복습
+서브쿼리
+    1) Query란 하나이상의 테이블이나 뷰로부터 데이터를 검색(retrieve)하는 동작을 말한다.
+        이 때 참조하는 최상위 레벨 SELECT 문을 Query(질의:쿼리)라 한다.
+    2) 쿼리가 또다른 SQL 문으로 nested된 것을 subquery라 한다.
+    3) main(parent) query = 기본적인 쿼리
+        sub(child) query
+        상관서브쿼리
+        
+RR, YY 차이점

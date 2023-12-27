@@ -1,0 +1,291 @@
+﻿1. insa 테이블에서 남자는 'X', 여자는 'O' 로 성별(gender) 출력하는 쿼리 작성
+    1. REPLACE() 사용해서 풀기
+
+
+
+    2. 집계(SET)연산자 사용해서 풀기
+
+
+
+
+    3. NVL2(), NULLIF() 사용해서 풀기.
+
+	SELECT name, ssn
+    		, NVL2(NULLIF(SUBSTR(ssn, 8, 1), '1'), 'O', 'X') gender
+	FROM insa;
+
+    
+    NAME                 SSN            GENDER
+    -------------------- -------------- ------
+    홍길동               771212-1022432    X
+    이순신               801007-1544236    X
+    이순애               770922-2312547    O
+    김정훈               790304-1788896    X
+    한석봉               811112-1566789    X 
+
+    
+2. insa 테이블에서 2000년 이후 입사자 정보 조회하는 쿼리 작성
+    1. TO_CHAR() 함수 사용해서 풀기
+
+	SELECT name, ibsadate
+	FROM insa
+	WHERE TO_CHAR(ibsadate, 'YYYY') >= '2000'
+	ORDER BY ibsadate;
+
+
+    2. EXTRACT() 함수 사용해서 풀기.
+
+	SELECT name, ibsadate
+	FROM insa
+	WHERE EXTRACT(YEAR FROM ibsadate) >= 2000
+	ORDER BY ibsadate;
+
+    
+    NAME                 IBSADATE
+    -------------------- --------
+    이미성               00/04/07
+    심심해               00/05/05
+    권영미               00/06/04
+    유관순               00/07/07 
+
+3. SQL 집합(SET) 연산자의 종류와 설명을 하세요
+  1) 종류
+	합집합 : UNION, UNION ALL
+	교집합 : INTERSECT
+	차집합 : MINUS
+
+  2) 주의할 점
+
+	UNION과 UNION ALL의 차이점은 
+	UNION은 중복되는 데이터를 하나로 처리해서 보여주고
+	UNION ALL은 중복되는 데이터를 모두 보여준다.
+
+( 힌트 : AVG() 평균 구하는  집계함수 사용 )  
+4. emp 테이블에서 급여와 평균급여를 구하고
+   각 사원의 급여-평균급여를 소수점 3자리에서 올림,반올림,내림해서 아래와 
+   같이 조회하는 쿼리를 작성하세요.
+   
+ENAME             PAY    AVG_PAY       차 올림      차 반올림       차 내림
+---------- ---------- ---------- ---------- ---------- ----------
+SMITH             800    2260.42   -1460.41   -1460.42   -1460.41
+ALLEN            1900    2260.42    -360.41    -360.42    -360.41
+WARD             1750    2260.42    -510.41    -510.42    -510.41
+JONES            2975    2260.42     714.59     714.58     714.58
+MARTIN           2650    2260.42     389.59     389.58     389.58
+BLAKE            2850    2260.42     589.59     589.58     589.58
+CLARK            2450    2260.42     189.59     189.58     189.58
+KING             5000    2260.42    2739.59    2739.58    2739.58
+TURNER           1500    2260.42    -760.41    -760.42    -760.41
+JAMES             950    2260.42   -1310.41   -1310.42   -1310.41
+FORD             3000    2260.42     739.59     739.58     739.58
+
+ENAME             PAY    AVG_PAY       차 올림      차 반올림       차 내림
+---------- ---------- ---------- ---------- ---------- ----------
+MILLER           1300    2260.42    -960.41    -960.42    -960.41 
+
+	WITH e AS (
+    		SELECT ename
+      	 		 , sal+NVL(comm, 0) pay
+      	 		 , (SELECT AVG(sal+NVL(comm, 0)) FROM emp) avg_pay
+    		FROM emp
+	)
+	SELECT e.ename, e.pay
+   		 , ROUND(e.avg_pay, 2) avg_pay
+   		 , CEIL((e.pay - e.avg_pay)*100)/100 "차 올림"
+   		 , ROUND(e.pay - e.avg_pay, 2) "차 반올림"
+   		 , TRUNC(e.pay - e.avg_pay, 2) "차 내림"
+	FROM e;
+
+
+
+( 힌트 : AVG() 평균 구하는  집계함수 사용 )
+4-2. emp 테이블에서 급여와 평균급여를 구하고
+    각 사원의 급여가 평균급여 보다 많으면 "많다"
+                   평균급여 보다 적으면 "적다"라고 출력
+
+	WITH e AS (
+    		SELECT ename
+      	 		 , sal+NVL(comm, 0) pay
+      	 		 , (SELECT AVG(sal+NVL(comm, 0)) FROM emp) avg_pay
+    		FROM emp
+	)
+	SELECT e.ename, e.pay
+   		 , ROUND(e.avg_pay, 2) avg_pay
+   		 , e.pay - e.avg_pay
+    		, NVL2(NULLIF(SIGN(e.pay - e.avg_pay), -1), '많다', '적다')
+	FROM e;
+
+
+
+5.  총 게시글수가 154개이고 한 페이지에 출력할 게시글 수가 15개 일 때
+     총 페이지수는 얼마인가 계산하는 쿼리 작성.
+    SELECT (?)
+    FROM dual;  
+
+	SELECT CEIL(154/15)
+	FROM dual;
+    
+5-2. insa 테이블에서 모든 사원들을 14명씩 팀을 만드면 총 몇 팀이 나올지를 쿼리로 작성하세요.
+ ( 힌트 : 집계(그룹)함수 사용)
+
+	SELECT CEIL(COUNT(*)/14)
+	FROM insa;
+ 
+6. emp 테이블에서 최고 급여자, 최저 급여자 정보 모두 조회
+                                            PAY(sal+comm)
+7369	SMITH	CLERK	7902	80/12/17	800		    20  최고급여자
+7839	KING	PRESIDENT		81/11/17	5000		10  최저급여자
+
+
+
+
+7. emp 테이블에서 
+   comm 이 400 이하인 사원의 정보 조회
+   ( comm 이 null 인 사원도 포함 )
+    
+    ENAME   SAL    COMM
+    SMITH	800	
+    ALLEN	1600	300
+    JONES	2975	
+    BLAKE	2850	
+    CLARK	2450	
+    KING	5000	
+    TURNER	1500	0
+    JAMES	950	
+    FORD	3000	
+    MILLER	1300	
+
+	SELECT ename, sal, comm
+	FROM emp
+	WHERE comm <= 400 OR comm IS NULL;
+
+    
+8. emp 테이블에서 각 부서별 급여(pay)를 가장 많이 받는 사원의 정보 출력.    
+
+	SELECT deptno, MAX(sal+NVL(comm, 0))
+	FROM emp
+	GROUP BY deptno;
+
+
+9. INSTR() 함수 사용하는 문제입니다. 
+    '031)1234-5678' 이라는 전화번호가 있을 경우
+    INSTR() 함수를 사용해서 1234 전화번호를 얻어오는 쿼리를 작성하세요
+    
+    SELECT (?)
+    FROM dual;
+
+	SELECT SUBSTR('031)1234-5678', INSTR('031)1234-5678', '1234'), 4)
+	FROM dual;
+
+
+10. SIGN() 함수 설명하세요. 
+
+	양수면 1, 음수면 -1, 0이면 0을 반환한다.
+
+11. ROUND()/CEIL()/FLOOR(),     TRUNC() 함수에 대해서 설명하세요.
+
+	ROUND() - 반올림 함수, 위치 지정 가능. 소수점을 기준으로 왼쪽은 음수 오른쪽은 양수
+	CEIL() - 올림 함수
+	FLOOR() - 내림 함수
+	TRUNC() - 내림 함수, 소수점을 기준으로 위치 지정 가능
+
+11-2. NVL, NVL2, NULLIF, COALESCE 널처리 함수에 대해서 설명하세요. 
+
+	NVL() - 널이면 값을 정해준다.
+	NVL2() - 널이 아니면 두번째 값을 널이면 세번째 값을 반환
+	NULLIF() - 해당값과 두번째 값이 같으면 널을 반환
+	COALESCE() - 매개변수중 null이 오면 다음값을 반환
+
+
+11-3. LIKE 연산자와 REGEXP_LIKE() 함수에 대해서 설명하세요.
+
+	LIKE는 와일드 카드로 %,_를 써서 문자열을 찾을 수 있고
+	REGEXP_LIKE()는 정규식을 사용해 문자열을 찾을 수 있다.
+
+12. emp 테이블에서 30번 부서만 PAY를 계산 후 막대그래프를 아래와 같이 그리는 쿼리 작성
+   ( 필요한 부분은 결과 분석하세요~    PAY가 100 단위당 # 한개 , 반올림처리 )
+[실행결과]
+DEPTNO ENAME PAY BAR_LENGTH      
+---------- ---------- ---------- ----------
+30	BLAKE	2850	29	 #############################
+30	MARTIN	2650	27	 ###########################
+30	ALLEN	1900	19	 ###################
+30	WARD	1750	18	 ##################
+30	TURNER	1500	15	 ###############
+30	JAMES	950	    10	 ##########
+
+	SELECT deptno, ename, sal+NVL(comm, 0) pay
+    		, RPAD(CEIL((sal+NVL(comm, 0))/100), CEIL((sal+NVL(comm, 0))/100)+LENGTH(TO_CHAR(CEIL((sal+NVL(comm, 0))/100))), '#') bar_length
+	FROM emp
+	WHERE deptno=30
+	ORDER BY pay DESC;
+
+
+13.  insa 테이블에서 주민등록번호를 123456-1******  형식으로 출력하세요 . 
+( LPAD  X, [RPAD 함수] 사용  )
+[실행결과]
+홍길동	770423-1022432	770423-1******
+이순신	800423-1544236	800423-1******
+이순애	770922-2312547	770922-2****** 
+
+	SELECT name, ssn, RPAD(SUBSTR(ssn, 1, 8), 14, '*')
+	FROM insa;
+
+
+14. SELECT TRUNC( SYSDATE, 'YEAR' )
+      , TRUNC( SYSDATE, 'MONTH' )      
+      , TRUNC( SYSDATE  )
+    FROM dual;
+    위의 쿼리의 결과를 적으세요 . 
+
+
+    
+15. emp 에서 평균PAY 보다 같거나 큰 사원들만의 급여합을 출력.
+[실행결과]
+NAME             SAL       COMM        PAY    AVG_PAY
+---------- ---------- ---------- ---------- ----------
+JONES            2975                  2975 2260.41667
+MARTIN           1250       1400       2650 2260.41667
+BLAKE            2850                  2850 2260.41667
+CLARK            2450                  2450 2260.41667
+KING             5000                  5000 2260.41667
+FORD             3000                  3000 2260.41667
+
+	SELECT ename, sal, comm, sal+NVL(comm, 0) pay
+  		  , (SELECT ROUND(AVG(sal+NVL(comm, 0)), 5) FROM emp) avg_pay
+	FROM emp
+	WHERE sal+NVL(comm, 0) >= ALL (SELECT ROUND(AVG(sal+NVL(comm, 0)), 5) FROM emp);
+
+
+16. emp 테이블의 ename, pay , 최대pay값 5000을 100%로 계산해서
+   각 사원의 pay를 백분률로 계산해서 10% 당 별하나(*)로 처리해서 출력
+   ( 소숫점 첫 째 자리에서 반올림해서 출력 )
+
+[실행결과]
+ename   pay     max_pay 퍼센트    별갯수
+SMITH	800	    5000	16%	2	 **
+ALLEN	1900	5000	38%	4	 ****
+WARD	1750	5000	35%	4	 ****
+JONES	2975	5000	59.5%	6	 ******
+MARTIN	2650	5000	53%	5	 *****
+BLAKE	2850	5000	57%	6	 ******
+CLARK	2450	5000	49%	5	 *****
+KING	5000	5000	100%	10	 **********
+TURNER	1500	5000	30%	3	 ***
+JAMES	950	    5000	19%	2	 **
+FORD	3000	5000	60%	6	 ******
+MILLER	1300	5000	26%	3	 ***
+
+	WITH e AS (
+  	 	 SELECT ename
+      	 		 , sal+NVL(comm, 0) pay
+      	  		, (SELECT MAX(sal+NVL(comm, 0)) FROM emp) max_pay
+   		FROM emp
+	)
+	SELECT e.ename, e.pay, e.max_pay
+    		, TO_CHAR(e.pay/e.max_pay*100)||'%' "퍼센트"
+   		, ROUND(e.pay/e.max_pay*100, -1)/10 "별갯수"
+   		, RPAD(ROUND(e.pay/e.max_pay*100, -1)/10,  ROUND(e.pay/e.max_pay*100, -1)/10+LENGTH(TO_CHAR(ROUND(e.pay/e.max_pay*100, -1)/10)), '*')
+	FROM e;
+
+

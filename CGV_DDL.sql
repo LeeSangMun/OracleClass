@@ -1,0 +1,1561 @@
+/* È¸¿ø */
+DROP TABLE USER_INFO 
+	CASCADE CONSTRAINTS;
+
+/* ±â´ëµÇ´Â ¿µÈ­ */
+DROP TABLE WISH_MOVIE 
+	CASCADE CONSTRAINTS;
+
+/* ³»°¡ º» ¿µÈ­ */
+DROP TABLE VIEW_HISTORY 
+	CASCADE CONSTRAINTS;
+
+/* CJ ONE Æ÷ÀÎÆ® */
+DROP TABLE CJ_POINT 
+	CASCADE CONSTRAINTS;
+
+/* ³ªÀÇ 1:1 ¹®ÀÇ */
+DROP TABLE MY_QNA 
+	CASCADE CONSTRAINTS;
+
+/* ³ªÀÇ ºÐ½Ç¹° ¹®ÀÇ */
+DROP TABLE MY_LOST 
+	CASCADE CONSTRAINTS;
+
+/* °£Æí°áÁ¦/Ä«µå»ç ÇÒÀÎÄíÆù */
+DROP TABLE PAYCARD_COUP 
+	CASCADE CONSTRAINTS;
+
+/* CJ ONE ÄíÆù */
+DROP TABLE CJONE_COUP 
+	CASCADE CONSTRAINTS;
+
+/* CGV ±âÇÁÆ®Ä«µå */
+DROP TABLE CGV_GIFTCARD 
+	CASCADE CONSTRAINTS;
+
+/* 4DX RED CARD */
+DROP TABLE CGV_REDCARD 
+	CASCADE CONSTRAINTS;
+
+/* ÀÌº¥Æ® Âü¿©°ü°è */
+DROP TABLE EVENT_PART 
+	CASCADE CONSTRAINTS;
+
+/* ÀÚÁÖ °¡´Â CGV */
+DROP TABLE BOOKMARK_CGV 
+	CASCADE CONSTRAINTS;
+
+/* CGV ÇÒÀÎÄíÆù */
+DROP TABLE CGV_COUP 
+	CASCADE CONSTRAINTS;
+
+/* VIP µî±Þ */
+DROP TABLE VIP_GRADE 
+	CASCADE CONSTRAINTS;
+
+/* ³»°¡ ¾´ ÆòÁ¡ */
+DROP TABLE MY_REVIEW 
+	CASCADE CONSTRAINTS;
+
+/* Ãâ¿¬¹è¿ì */
+DROP TABLE C_ACTOR 
+	CASCADE CONSTRAINTS;
+
+/* ¿µÈ­°¨µ¶ */
+DROP TABLE M_DIRECTOR 
+	CASCADE CONSTRAINTS;
+
+/* °øÁö»çÇ× */
+DROP TABLE Temporary 
+	CASCADE CONSTRAINTS;
+
+/* ÀÌº¥Æ® Ä«Å×°í¸® */
+DROP TABLE EVENT_CATEGORY 
+	CASCADE CONSTRAINTS;
+
+/* ´çÃ·ÀÚ¹ßÇ¥ */
+DROP TABLE WINNER 
+	CASCADE CONSTRAINTS;
+
+/* ÀÌº¥Æ® */
+DROP TABLE EVENT 
+	CASCADE CONSTRAINTS;
+
+/* ½ºÅä¾î °áÁ¦ */
+DROP TABLE payment 
+	CASCADE CONSTRAINTS;
+
+/* Àå¹Ù±¸´Ï */
+DROP TABLE BASKET 
+	CASCADE CONSTRAINTS;
+
+/* ½ºÅä¾î */
+DROP TABLE STORE 
+	CASCADE CONSTRAINTS;
+
+/* °áÁ¦ */
+DROP TABLE MOVIE_PAY 
+	CASCADE CONSTRAINTS;
+
+/* »ó¿µ°ü */
+DROP TABLE SCREEN 
+	CASCADE CONSTRAINTS;
+
+/* °ü/ÁÂ¼® */
+DROP TABLE SEAT 
+	CASCADE CONSTRAINTS;
+
+/* »ó¿µÁ¤º¸ */
+DROP TABLE SHOW 
+	CASCADE CONSTRAINTS;
+
+/* ÇÒÀÎÄ«µå */
+DROP TABLE DIS_CARD 
+	CASCADE CONSTRAINTS;
+
+/* ¿¹¸Å */
+DROP TABLE MOVIE_RS 
+	CASCADE CONSTRAINTS;
+
+/* Áö¿ª */
+DROP TABLE REGION 
+	CASCADE CONSTRAINTS;
+
+/* »ó¿µ°ü_Á¾·ù */
+DROP TABLE SCREEN_CAT 
+	CASCADE CONSTRAINTS;
+
+/* »óÇ°±Ç */
+DROP TABLE GIFTCARD 
+	CASCADE CONSTRAINTS;
+
+/* ±ØÀå */
+DROP TABLE THEATER 
+	CASCADE CONSTRAINTS;
+
+/* °¨Á¤ Æ÷ÀÎÆ® */
+DROP TABLE EMOTION_POINT 
+	CASCADE CONSTRAINTS;
+
+/* ¿µÈ­ */
+DROP TABLE MOVIE 
+	CASCADE CONSTRAINTS;
+
+/* ½ºÆ¿ÄÆ, Æ®·¹ÀÏ·¯ */
+DROP TABLE TRAILER 
+	CASCADE CONSTRAINTS;
+
+/* ¹è¿ì ±âº»¼³¸í */
+DROP TABLE ACTOR 
+	CASCADE CONSTRAINTS;
+
+/* ¸Å·Â Æ÷ÀÎÆ® */
+DROP TABLE ATTR_POINT 
+	CASCADE CONSTRAINTS;
+
+/* °ü¶÷Æò */
+DROP TABLE MV_REVIEW 
+	CASCADE CONSTRAINTS;
+
+/* °¨µ¶ */
+DROP TABLE DIRECTOR 
+	CASCADE CONSTRAINTS;
+
+/* Å¬·´¼­ºñ½º */
+DROP TABLE CGV_CLUB 
+	CASCADE CONSTRAINTS;
+
+/* ÇÒÀÎÁ¤º¸ */
+DROP TABLE BENEFIT_INFO 
+	CASCADE CONSTRAINTS;
+
+/* ÄíÆù */
+DROP TABLE COUP_CATEGORY 
+	CASCADE CONSTRAINTS;
+
+/* Ä«µå */
+DROP TABLE CARD_CATEGORY 
+	CASCADE CONSTRAINTS;
+
+/* È¸¿ø */
+CREATE TABLE USER_INFO (
+	user_id VARCHAR2(12) NOT NULL, /* È¸¿øID */
+	user_name VARCHAR2(20) NOT NULL, /* ÀÌ¸§ */
+	user_pwd VARCHAR2(12) NOT NULL, /* È¸¿øPWD */
+	nickname VARCHAR2(30) NOT NULL, /* ´Ð³×ÀÓ */
+	birth DATE NOT NULL, /* »ý³â¿ùÀÏ */
+	address VARCHAR2(100), /* ÁÖ¼Ò */
+	email VARCHAR2(30) NOT NULL, /* ÀÌ¸ÞÀÏ */
+	gender CHAR(1) NOT NULL, /* ¼ºº° */
+	vipgrade VARCHAR2(10) DEFAULT 'ÀÏ¹Ý' NOT NULL, /* VIPµî±Þ */
+	tel VARCHAR2(15) NOT NULL, /* ÀüÈ­¹øÈ£ */
+	user_cjpoint NUMBER(7) DEFAULT 0 NOT NULL /* CJ ONE Æ÷ÀÎÆ® */
+);
+
+ALTER TABLE USER_INFO
+	ADD
+		CONSTRAINT PK_USER_INFO
+		PRIMARY KEY (
+			user_id
+		);
+
+ALTER TABLE USER_INFO
+	ADD
+		CONSTRAINT CK_USER_INFO_USER_ID
+		CHECK (REGEXP_LIKE (USER_ID,'/^[a-z0-9]{6,12}$/'));
+
+ALTER TABLE USER_INFO
+	ADD
+		CONSTRAINT CK_USER_INFO_USER_PWD
+		CHECK (REGEXP_LIKE (USER_PWD,'/^.*(?=.{8,12})(?=*[a-zA-Z])(?=.*[0-9])(?=.[!"#$%''()*+,-.\/:;<=>?@[]^_`{|}~]).*$/'));
+
+ALTER TABLE USER_INFO
+	ADD
+		CONSTRAINT CK_USER_INFO_EMAIL
+		CHECK (REGEXP_LIKE(email, '/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/'));
+
+ALTER TABLE USER_INFO
+	ADD
+		CONSTRAINT CK_USER_INFO_NICKNAME
+		CHECK (REGEXP_LIKE(nickname, '/^[°¡-ÆRa-zA-Z0-9]{1,10}$/'));
+
+/* ±â´ëµÇ´Â ¿µÈ­ */
+CREATE TABLE WISH_MOVIE (
+	user_id VARCHAR2(12) NOT NULL, /* È¸¿øID */
+	mv_id NUMBER(10) NOT NULL /* ¿µÈ­ID */
+);
+
+ALTER TABLE WISH_MOVIE
+	ADD
+		CONSTRAINT PK_WISH_MOVIE
+		PRIMARY KEY (
+			user_id
+		);
+
+/* ³»°¡ º» ¿µÈ­ */
+CREATE TABLE VIEW_HISTORY (
+	user_id VARCHAR2(12) NOT NULL, /* È¸¿øID */
+	MV_ID NUMBER(10) NOT NULL, /* ¿µÈ­ID */
+	MV_title VARCHAR2(30) NOT NULL, /* ¿µÈ­ Á¦¸ñ */
+	view_datetime DATE NOT NULL, /* °ü¶÷ ÀÏÀÚ ¹× ½Ã°£ */
+	cinema_id CHAR(4) NOT NULL, /* °ü¶÷ ±ØÀå */
+	theater_id CHAR(4) NOT NULL, /* °ü¶÷ »ó¿µ°ü */
+	num_people NUMBER(1) NOT NULL, /* ÀÎ¿ø¼ö */
+	my_mvreview CHAR(1) /* ¿µÈ­ Æò°¡ */
+);
+
+ALTER TABLE VIEW_HISTORY
+	ADD
+		CONSTRAINT PK_VIEW_HISTORY
+		PRIMARY KEY (
+			user_id,
+			MV_ID
+		);
+
+/* CJ ONE Æ÷ÀÎÆ® */
+CREATE TABLE CJ_POINT (
+	user_id VARCHAR2(12) NOT NULL, /* È¸¿øID */
+	cjpoint_type CHAR(1) NOT NULL, /* ±¸¸Å ±¸ºÐ */
+	cinema_id CHAR(4) NOT NULL, /* ±¸¸Å±ØÀå */
+	cjpoint NUMBER(7) NOT NULL, /* Àû¸³ Æ÷ÀÎÆ® */
+	cjpiont_date DATE DEFAULT SYSDATE NOT NULL /* Àû¸³ÀÏ */
+);
+
+ALTER TABLE CJ_POINT
+	ADD
+		CONSTRAINT PK_CJ_POINT
+		PRIMARY KEY (
+			user_id
+		);
+
+/* ³ªÀÇ 1:1 ¹®ÀÇ */
+CREATE TABLE MY_QNA (
+	user_id VARCHAR2(12) NOT NULL, /* È¸¿øID */
+	qna_id NUMBER(7) NOT NULL, /* ¹®ÀÇID */
+	cinema_id CHAR(4), /* ¹®ÀÇCGV */
+	qna_type VARCHAR2(25) NOT NULL, /* À¯Çü */
+	qna_title VARCHAR2(300) NOT NULL, /* Á¦¸ñ */
+	qna_content CLOB NOT NULL, /* ³»¿ë */
+	qna_date DATE DEFAULT SYSDATE NOT NULL, /* µî·ÏÀÏ */
+	qna_state VARCHAR2(20) NOT NULL, /* »óÅÂ */
+	qna_satisf VARCHAR2(25) /* ¸¸Á·µµ */
+);
+
+ALTER TABLE MY_QNA
+	ADD
+		CONSTRAINT PK_MY_QNA
+		PRIMARY KEY (
+			user_id,
+			qna_id
+		);
+
+/* ³ªÀÇ ºÐ½Ç¹° ¹®ÀÇ */
+CREATE TABLE MY_LOST (
+	user_id VARCHAR2(12) NOT NULL, /* È¸¿øID */
+	lost_id CHAR(4) NOT NULL, /* ¹®ÀÇID */
+	cinema_id CHAR(4) NOT NULL, /* ºÐ½Ç CGV */
+	lost_content CLOB NOT NULL, /* ¹®ÀÇ ³»¿ë */
+	lost_date DATE DEFAULT SYSDATE NOT NULL, /* µî·ÏÀÏ */
+	lost_state CHAR(1) NOT NULL /* »óÅÂ */
+);
+
+ALTER TABLE MY_LOST
+	ADD
+		CONSTRAINT PK_MY_LOST
+		PRIMARY KEY (
+			user_id,
+			lost_id
+		);
+
+/* °£Æí°áÁ¦/Ä«µå»ç ÇÒÀÎÄíÆù */
+CREATE TABLE PAYCARD_COUP (
+	user_id VARCHAR2(12) NOT NULL, /* È¸¿øID */
+	COUP_ID NUMBER(15) NOT NULL, /* ÄíÆùID */
+	used_date DATE, /* »ç¿ëÀÏ */
+	cinema_id CHAR(4) /* °ü¶÷±ØÀå */
+);
+
+ALTER TABLE PAYCARD_COUP
+	ADD
+		CONSTRAINT PK_PAYCARD_COUP
+		PRIMARY KEY (
+			user_id,
+			COUP_ID
+		);
+
+/* CJ ONE ÄíÆù */
+CREATE TABLE CJONE_COUP (
+	COUP_ID NUMBER(15) NOT NULL, /* ÄíÆùID */
+	user_id VARCHAR2(12) NOT NULL /* È¸¿øID */
+);
+
+ALTER TABLE CJONE_COUP
+	ADD
+		CONSTRAINT PK_CJONE_COUP
+		PRIMARY KEY (
+			COUP_ID,
+			user_id
+		);
+
+/* CGV ±âÇÁÆ®Ä«µå */
+CREATE TABLE CGV_GIFTCARD (
+	user_id VARCHAR2(12) NOT NULL, /* È¸¿øID */
+	CARD_ID VARCHAR2(10) NOT NULL, /* Ä«µåID */
+	use_date DATE, /* ÀÏ½Ã */
+	giftcard_state char(1), /* »óÅÂ */
+	giftcard_history VARCHAR2(40), /* »ç¿ë³»¿ª */
+	giftcard_price NUMBER(6) /* ³²Àº±Ý¾× */
+);
+
+ALTER TABLE CGV_GIFTCARD
+	ADD
+		CONSTRAINT PK_CGV_GIFTCARD
+		PRIMARY KEY (
+			user_id,
+			CARD_ID
+		);
+
+/* 4DX RED CARD */
+CREATE TABLE CGV_REDCARD (
+	user_id VARCHAR2(12) NOT NULL, /* È¸¿øID */
+	redcard_id VARCHAR2(10) NOT NULL, /* Ä«µåID */
+	MV_ID NUMBER(10) NOT NULL, /* ¿µÈ­ID */
+	view_datetime DATE NOT NULL, /* °ü¶÷ÀÏ */
+	cinema_id CHAR(4) NOT NULL, /* °ü¶÷±ØÀå */
+	redcard_history VARCHAR2(40) /* »ç¿ë³»¿ª */
+);
+
+ALTER TABLE CGV_REDCARD
+	ADD
+		CONSTRAINT PK_CGV_REDCARD
+		PRIMARY KEY (
+			user_id,
+			redcard_id,
+			MV_ID
+		);
+
+/* ÀÌº¥Æ® Âü¿©°ü°è */
+CREATE TABLE EVENT_PART (
+	user_id VARCHAR2(12) NOT NULL, /* È¸¿øID */
+	event_id NUMBER(7) NOT NULL /* ÀÌº¥Æ®ID */
+);
+
+ALTER TABLE EVENT_PART
+	ADD
+		CONSTRAINT PK_EVENT_PART
+		PRIMARY KEY (
+			user_id,
+			event_id
+		);
+
+/* ÀÚÁÖ °¡´Â CGV */
+CREATE TABLE BOOKMARK_CGV (
+	user_id VARCHAR2(12) NOT NULL, /* È¸¿øID */
+	cinema_id1 CHAR(4), /* ±ØÀåID1 */
+	cinema_id2 CHAR(4), /* ±ØÀåID2 */
+	cinema_id3 CHAR(4), /* ±ØÀåID3 */
+	cinema_id4 CHAR(4), /* ±ØÀåID4 */
+	cinema_id5 CHAR(4) /* ±ØÀåID5 */
+);
+
+ALTER TABLE BOOKMARK_CGV
+	ADD
+		CONSTRAINT PK_BOOKMARK_CGV
+		PRIMARY KEY (
+			user_id
+		);
+
+/* CGV ÇÒÀÎÄíÆù */
+CREATE TABLE CGV_COUP (
+	user_id VARCHAR2(12) NOT NULL, /* È¸¿øID */
+	COUP_ID NUMBER(15) NOT NULL /* ÄíÆùID */
+);
+
+ALTER TABLE CGV_COUP
+	ADD
+		CONSTRAINT PK_CGV_COUP
+		PRIMARY KEY (
+			user_id,
+			COUP_ID
+		);
+
+/* VIP µî±Þ */
+CREATE TABLE VIP_GRADE (
+	user_id VARCHAR2(12) NOT NULL, /* È¸¿øID */
+	vip_score NUMBER(7) DEFAULT 0 NOT NULL, /* VIP ´©ÀûÁ¡¼ö */
+	vip_date DATE, /* VIP ½Â±Þ³â/¿ù */
+	rvip_date DATE, /* RVIP ½Â±Þ³â/¿ù */
+	vvip_date DATE, /* VVIP ½Â±Þ³â/¿ù */
+	svip_date DATE /* SVIP ½Â±Þ³â/¿ù */
+);
+
+ALTER TABLE VIP_GRADE
+	ADD
+		CONSTRAINT PK_VIP_GRADE
+		PRIMARY KEY (
+			user_id
+		);
+
+/* ³»°¡ ¾´ ÆòÁ¡ */
+CREATE TABLE MY_REVIEW (
+	user_id VARCHAR2(12) NOT NULL, /* È¸¿øID */
+	MV_ID NUMBER(10) NOT NULL, /* ¿µÈ­ID */
+	rv_date DATE DEFAULT SYSDATE NOT NULL, /* ÀÛ¼ºÀÏ */
+	rv_content CLOB NOT NULL, /* ³»¿ë */
+	rv_recom NUMBER(3) /* ÃßÃµ¼ö */
+);
+
+ALTER TABLE MY_REVIEW
+	ADD
+		CONSTRAINT PK_MY_REVIEW
+		PRIMARY KEY (
+			user_id,
+			MV_ID
+		);
+
+/* Ãâ¿¬¹è¿ì */
+CREATE TABLE C_ACTOR (
+	CAST_ID NUMBER NOT NULL, /* Ãâ¿¬¹è¿ìID */
+	ACT_ID NUMBER NOT NULL, /* ¹è¿ì ID */
+	MV_ID NUMBER(10) NOT NULL /* ¿µÈ­ID */
+);
+
+ALTER TABLE C_ACTOR
+	ADD
+		CONSTRAINT PK_C_ACTOR
+		PRIMARY KEY (
+			CAST_ID
+		);
+
+/* ¿µÈ­°¨µ¶ */
+CREATE TABLE M_DIRECTOR (
+	M_ID NUMBER NOT NULL, /* ¿µÈ­°¨µ¶ID */
+	DT_ID NUMBER(5) NOT NULL, /* °¨µ¶ ID */
+	MV_ID NUMBER(10) NOT NULL /* ¿µÈ­ID */
+);
+
+ALTER TABLE M_DIRECTOR
+	ADD
+		CONSTRAINT PK_M_DIRECTOR
+		PRIMARY KEY (
+			M_ID
+		);
+
+/* °øÁö»çÇ× */
+CREATE TABLE Temporary (
+	TEMP_ID NUMBER NOT NULL, /* °øÁö»çÇ×ID */
+	TEMP_CAT NVARCHAR2(10) NOT NULL, /* ±¸ºÐ */
+	TITLE NVARCHAR2(50) NOT NULL, /* Á¦¸ñ */
+	CONTENT CLOB NOT NULL, /* ³»¿ë */
+	REGDATE DATE, /* µî·ÏÀÏ */
+	VIEW_CNT NUMBER /* Á¶È¸¼ö */
+);
+
+ALTER TABLE Temporary
+	ADD
+		CONSTRAINT PK_Temporary
+		PRIMARY KEY (
+			TEMP_ID
+		);
+
+/* ÀÌº¥Æ® Ä«Å×°í¸® */
+CREATE TABLE EVENT_CATEGORY (
+	EVENT_ID2 NUMBER(7) NOT NULL, /* ÀÌº¥Æ®ID */
+	EVENT_CATE VARCHAR2(20) NOT NULL /* ÀÌº¥Æ® ºÐ·ù */
+);
+
+ALTER TABLE EVENT_CATEGORY
+	ADD
+		CONSTRAINT PK_EVENT_CATEGORY
+		PRIMARY KEY (
+			EVENT_ID2
+		);
+
+/* ´çÃ·ÀÚ¹ßÇ¥ */
+CREATE TABLE WINNER (
+	COL NUMBER NOT NULL, /* ´çÃ·ÀÚ¹ßÇ¥ID */
+	USER_ID VARCHAR2(12) NOT NULL, /* È¸¿øID */
+	EVENT_ID2 NUMBER(7) /* ÀÌº¥Æ®ID */
+);
+
+ALTER TABLE WINNER
+	ADD
+		CONSTRAINT PK_WINNER
+		PRIMARY KEY (
+			COL
+		);
+
+/* ÀÌº¥Æ® */
+CREATE TABLE EVENT (
+	EVENT_ID NUMBER(7) NOT NULL, /* ÀÌº¥Æ®ID */
+	EVENT_TITLE VARCHAR2(50) NOT NULL, /* ÀÌº¥Æ®Á¦¸ñ */
+	EVENT_CONTENT VARCHAR2(2000) NOT NULL, /* ÀÌº¥Æ®³»¿ë */
+	EVENT_PERIOD DATE NOT NULL, /* ½ÃÀÛÀÏ */
+	EVENT_END DATE, /* Á¾·áÀÏ */
+	EVENT_IMAGE VARCHAR2(500) NOT NULL, /* ÀÌº¥Æ®ÀÌ¹ÌÁö */
+	THEATER_ID CHAR(4) /* ±ØÀåID */
+);
+
+ALTER TABLE EVENT
+	ADD
+		CONSTRAINT PK_EVENT
+		PRIMARY KEY (
+			EVENT_ID
+		);
+
+/* ½ºÅä¾î °áÁ¦ */
+CREATE TABLE payment (
+	pay_id NUMBER NOT NULL, /* °áÁ¦ID */
+	sotore_id NUMBER NOT NULL, /* »óÇ°ID */
+	s_count NUMBER(2) NOT NULL, /* »óÇ°¼ö·® */
+	b_id NUMBER, /* Àå¹Ù±¸´ÏID */
+	rc_name VARCHAR(10), /* ¹Þ´Â»ç¶÷ */
+	rc_number VARCHAR(13), /* ¹Þ´Â »ç¶÷ Àü¹ø */
+	user_id VARCHAR2(12) NOT NULL /* È¸¿øID */
+);
+
+ALTER TABLE payment
+	ADD
+		CONSTRAINT PK_payment
+		PRIMARY KEY (
+			pay_id
+		);
+
+/* Àå¹Ù±¸´Ï */
+CREATE TABLE BASKET (
+	b_id NUMBER NOT NULL, /* Àå¹Ù±¸´ÏID */
+	b_count NUMBER(2) NOT NULL, /* »óÇ°¼ö·® */
+	sotore_id NUMBER NOT NULL, /* »óÇ°ID */
+	user_id VARCHAR2(12) NOT NULL /* È¸¿øID */
+);
+
+ALTER TABLE BASKET
+	ADD
+		CONSTRAINT PK_BASKET
+		PRIMARY KEY (
+			b_id
+		);
+
+/* ½ºÅä¾î */
+CREATE TABLE STORE (
+	sotore_id NUMBER NOT NULL, /* »óÇ°ID */
+	s_price NUMBER(6) NOT NULL, /* »óÇ°°¡°Ý */
+	s_date DATE DEFAULT SYSDATE NOT NULL, /* »óÇ°µî·ÏÀÏ */
+	s_title VARCHAR2(30) NOT NULL /* »óÇ°ÀÌ¸§ */
+);
+
+ALTER TABLE STORE
+	ADD
+		CONSTRAINT PK_STORE
+		PRIMARY KEY (
+			sotore_id
+		);
+
+/* °áÁ¦ */
+CREATE TABLE MOVIE_PAY (
+	MV_PAY_ID NUMBER NOT NULL, /* °áÁ¦ ID */
+	COL VARCHAR2(12) NOT NULL, /* È¸¿øID */
+	SHOW_ID NUMBER NOT NULL, /* »ó¿µID */
+	COL2 NUMBER(3) NOT NULL, /* »óÇ°±ÇID */
+	PAY_WAY NUMBER(3) NOT NULL, /* Ä«µåID */
+	PAY_DATE DATE DEFAULT SYSDATE NOT NULL, /* °áÁ¦ ½Ã°£ */
+	PAY_CAN_DATE DATE NOT NULL, /* °áÁ¦ Ãë¼Ò ½Ã°£ */
+	PAY_MONEY NUMBER(7) NOT NULL, /* °áÁ¦ ±Ý¾× */
+	MVRS_ID VARCHAR2(20) NOT NULL /* ¿¹¸ÅID */
+);
+
+ALTER TABLE MOVIE_PAY
+	ADD
+		CONSTRAINT PK_MOVIE_PAY
+		PRIMARY KEY (
+			MV_PAY_ID
+		);
+
+/* »ó¿µ°ü */
+CREATE TABLE SCREEN (
+	SCREEN_ID NUMBER NOT NULL, /* »ó¿µ°üID */
+	SCREEN_CATEGORY_ID NUMBER NOT NULL, /* »ó¿µ°ü Á¾·ù ¹øÈ£ */
+	THEATER_ID CHAR(4) NOT NULL, /* ±ØÀåID */
+	SCREEN_ALLCNT NUMBER(3) /* ÃÑÁÂ¼®¼ö */
+);
+
+ALTER TABLE SCREEN
+	ADD
+		CONSTRAINT PK_SCREEN
+		PRIMARY KEY (
+			SCREEN_ID
+		);
+
+/* °ü/ÁÂ¼® */
+CREATE TABLE SEAT (
+	SCREEN_ID NUMBER NOT NULL, /* »ó¿µ°üID */
+	SEAT_CODE VARCHAR(4) NOT NULL, /* ÁÂ¼®ÄÚµå */
+	SEAT_GRADE VARCHAR(15) NOT NULL, /* ÁÂ¼®µî±Þ */
+	SEAT_CATEGORY VARCHAR2(25) NOT NULL /* Ä«Å×°í¸® */
+);
+
+ALTER TABLE SEAT
+	ADD
+		CONSTRAINT PK_SEAT
+		PRIMARY KEY (
+			SCREEN_ID,
+			SEAT_CODE
+		);
+
+/* »ó¿µÁ¤º¸ */
+CREATE TABLE SHOW (
+	SHOW_ID NUMBER NOT NULL, /* »ó¿µID */
+	SCREEN_ID NUMBER NOT NULL, /* »ó¿µ°üID */
+	MOVIE_ID NUMBER(10) NOT NULL, /* ¿µÈ­ID */
+	END_TIME DATE NOT NULL, /* Á¾·á½Ã°£ */
+	START_TIME DATE NOT NULL /* ½ÃÀÛ½Ã°£ */
+);
+
+ALTER TABLE SHOW
+	ADD
+		CONSTRAINT PK_SHOW
+		PRIMARY KEY (
+			SHOW_ID
+		);
+
+/* ÇÒÀÎÄ«µå */
+CREATE TABLE DIS_CARD (
+	card_id NUMBER(3) NOT NULL, /* Ä«µåID */
+	card_name VARCHAR2(50) NOT NULL, /* Ä«µåÀÌ¸§ */
+	discount_type VARCHAR2(50), /* ÇÒÀÎÀ¯Çü */
+	discount_price NUMBER NOT NULL, /* ÇÒÀÎ±Ý¾× */
+	discount_content VARCHAR2(150) NOT NULL /* ÇÒÀÎ³»¿ë */
+);
+
+ALTER TABLE DIS_CARD
+	ADD
+		CONSTRAINT DIS_CARD
+		PRIMARY KEY (
+			card_id
+		);
+
+/* ¿¹¸Å */
+CREATE TABLE MOVIE_RS (
+	MVRS_ID VARCHAR2(20) NOT NULL, /* ¿¹¸ÅID */
+	SHOW_ID NUMBER NOT NULL, /* »ó¿µID */
+	COL3 VARCHAR2(12) NOT NULL, /* È¸¿øID */
+	MVRS_DATE DATE DEFAULT SYSDATE NOT NULL, /* ¿¹¸Å ³¯Â¥ */
+	MVRS_PRICE NUMBER(7) NOT NULL, /* ÃÖÁ¾°¡°Ý */
+	SEAT_CODE VARCHAR(4) NOT NULL, /* ÁÂ¼®ÄÚµå */
+	SCREEN_ID NUMBER NOT NULL /* »ó¿µ°üID */
+);
+
+ALTER TABLE MOVIE_RS
+	ADD
+		CONSTRAINT PK_MOVIE_RS
+		PRIMARY KEY (
+			MVRS_ID
+		);
+
+/* Áö¿ª */
+CREATE TABLE REGION (
+	REGION_ID NUMBER(3) NOT NULL, /* Áö¿ªID */
+	REGION_NAME NVARCHAR2(8) NOT NULL /* Áö¿ª¸í */
+);
+
+ALTER TABLE REGION
+	ADD
+		CONSTRAINT PK_REGION
+		PRIMARY KEY (
+			REGION_ID
+		);
+
+/* »ó¿µ°ü_Á¾·ù */
+CREATE TABLE SCREEN_CAT (
+	SCREEN_CATEGORY_ID NUMBER NOT NULL, /* »ó¿µ°ü Á¾·ù ¹øÈ£ */
+	SCREEN_CATEGORY NVARCHAR2(25) NOT NULL, /* »ó¿µ°ü Á¾·ù */
+	NORMAL NUMBER(5), /* ÀÏ¹Ý */
+	PREFER NUMBER(5), /* ¿ì´ë */
+	OLD NUMBER(5), /* ³ëÀÎ */
+	CHILD NUMBER(5) /* Ã»¼Ò³â */
+);
+
+ALTER TABLE SCREEN_CAT
+	ADD
+		CONSTRAINT PK_SCREEN_CAT
+		PRIMARY KEY (
+			SCREEN_CATEGORY_ID
+		);
+
+/* »óÇ°±Ç */
+CREATE TABLE GIFTCARD (
+	giftcard_ID NUMBER(3) NOT NULL, /* »óÇ°±ÇID */
+	giftcard_name VARCHAR2(50) NOT NULL, /* »óÇ°±ÇÀÌ¸§ */
+	giftcard_type VARCHAR2(20) NOT NULL, /* »óÇ°±ÇÅ¸ÀÔ */
+	giftcard_moneytype NUMBER(7) NOT NULL /* »óÇ°±ÇÁ¾ */
+);
+
+ALTER TABLE GIFTCARD
+	ADD
+		CONSTRAINT GIFTCARD
+		PRIMARY KEY (
+			giftcard_ID
+		);
+
+/* ±ØÀå */
+CREATE TABLE THEATER (
+	THEATER_ID CHAR(4) NOT NULL, /* ±ØÀåID */
+	REGION_ID NUMBER(3) NOT NULL, /* Áö¿ªID */
+	TT_NAME NVARCHAR2(10) NOT NULL, /* ±ØÀåÀÌ¸§ */
+	TT_ADR NVARCHAR2(100) NOT NULL, /* ÁÖ¼Ò */
+	TT_SC_ALLCNT NUMBER(2), /* °ü */
+	TT_SE_ALLCNT NUMBER(4), /* ÁÂ¼® */
+	THEATER_SUM NVARCHAR2(100) /* ±ØÀå¼³¸í */
+);
+
+ALTER TABLE THEATER
+	ADD
+		CONSTRAINT PK_THEATER
+		PRIMARY KEY (
+			THEATER_ID
+		);
+
+/* °¨Á¤ Æ÷ÀÎÆ® */
+CREATE TABLE EMOTION_POINT (
+	MV_ID NUMBER(10) NOT NULL, /* ¿µÈ­ID */
+	EMOTION_1 NUMBER(3,1) NOT NULL, /* Áñ°Å¿ò Á¡¼ö */
+	EMOTION_2 NUMBER(3,1) NOT NULL, /* °¨µ¿Á¡¼ö */
+	EMOTION_3 NUMBER(3,1) NOT NULL, /* ¸ôÀÔ°¨Á¡¼ö */
+	EMOTION_4 NUMBER(3,1) NOT NULL, /* ½ºÆ®·¹½º ÇØ¼Ò Á¡¼ö */
+	EMOTION_5 NUMBER(3,1) NOT NULL /* ±äÀå°¨ Á¡¼ö */
+);
+
+ALTER TABLE EMOTION_POINT
+	ADD
+		CONSTRAINT PK_EMOTION_POINT
+		PRIMARY KEY (
+			MV_ID
+		);
+
+/* ¿µÈ­ */
+CREATE TABLE MOVIE (
+	MV_ID NUMBER(10) NOT NULL, /* ¿µÈ­ID */
+	MV_TITLE NVARCHAR2(30) NOT NULL, /* ¿µÈ­ Á¦¸ñ */
+	MV_OPEN DATE NOT NULL, /* °³ºÀ³¯Â¥ */
+	MV_RT VARCHAR2(10) NOT NULL, /* ·¯´×Å¸ÀÓ */
+	MV_NATION VARCHAR2(30), /* ±¹°¡ */
+	MV_GENRE VARCHAR2(30), /* Àå¸£ */
+	MV_SUMMARY NVARCHAR2(500), /* ÁÙ°Å¸® */
+	MV_GRADE VARCHAR2(20) NOT NULL, /* ½ÉÀÇµî±Þ */
+	MV_GOLEGG VARCHAR2(15) NOT NULL /* GOLDEN EGGÁö¼ö */
+);
+
+ALTER TABLE MOVIE
+	ADD
+		CONSTRAINT PK_MOVIE
+		PRIMARY KEY (
+			MV_ID
+		);
+
+/* ½ºÆ¿ÄÆ, Æ®·¹ÀÏ·¯ */
+CREATE TABLE TRAILER (
+	MV_ID NUMBER(10) NOT NULL, /* ¿µÈ­ID */
+	DB_TITLE NVARCHAR2(20), /* Á¦¸ñ */
+	DB_PATH VARCHAR2(500) /* °æ·Î */
+);
+
+ALTER TABLE TRAILER
+	ADD
+		CONSTRAINT PK_TRAILER
+		PRIMARY KEY (
+			MV_ID
+		);
+
+/* ¹è¿ì ±âº»¼³¸í */
+CREATE TABLE ACTOR (
+	ACT_ID NUMBER NOT NULL, /* ¹è¿ì ID */
+	ACT_NAME NVARCHAR2(30) NOT NULL, /* ÀÌ¸§ */
+	ACT_BIRTH DATE, /* Ãâ»ý */
+	ACT_JOB NVARCHAR2(10), /* Á÷¾÷ */
+	ACT_NATIONAL NVARCHAR2(15), /* ±¹°¡ */
+	ACT_PHYSICAL NVARCHAR2(7), /* ½ÅÃ¼ */
+	ACT_SUMMARY NVARCHAR2(500) /* ¹ÙÀÌ¿À±×·¡ÇÇ */
+);
+
+ALTER TABLE ACTOR
+	ADD
+		CONSTRAINT PK_ACTOR
+		PRIMARY KEY (
+			ACT_ID
+		);
+
+/* ¸Å·Â Æ÷ÀÎÆ® */
+CREATE TABLE ATTR_POINT (
+	MV_ID NUMBER(10) NOT NULL, /* ¿µÈ­ID */
+	CHARM_1 NUMBER(3,1) NOT NULL, /* °¨µ¶¿¬ÃâÁ¡¼ö */
+	CHARM_2 NUMBER(3,1) NOT NULL, /* ¿µ»ó ¹ÌÁ¡¼ö */
+	CHARM_3 NUMBER(3,1) NOT NULL, /* ¹è¿ì ¿¬±âÁ¡¼ö */
+	CHARM_4 NUMBER(3,1) NOT NULL, /* OSTÁ¡¼ö */
+	CHARM_5 NUMBER(3,1) NOT NULL /* ½ºÅä¸® Á¡¼ö */
+);
+
+ALTER TABLE ATTR_POINT
+	ADD
+		CONSTRAINT PK_ATTR_POINT
+		PRIMARY KEY (
+			MV_ID
+		);
+
+/* °ü¶÷Æò */
+CREATE TABLE MV_REVIEW (
+	MV_ID NUMBER(10) NOT NULL, /* ¿µÈ­ID */
+	user_id VARCHAR2(12) NOT NULL, /* È¸¿øID */
+	SEE_APP NVARCHAR2(280), /* °ü¶÷Æò */
+	REC_CNT NUMBER(3) DEFAULT 0 /* ÃßÃµ¼ö */
+);
+
+ALTER TABLE MV_REVIEW
+	ADD
+		CONSTRAINT PK_MV_REVIEW
+		PRIMARY KEY (
+			MV_ID,
+			user_id
+		);
+
+/* °¨µ¶ */
+CREATE TABLE DIRECTOR (
+	DT_ID NUMBER(5) NOT NULL, /* °¨µ¶ ID */
+	DT_NAME NVARCHAR2(30) NOT NULL, /* ÀÌ¸§ */
+	DT_SUMMARY NVARCHAR2(500) /* ¹ÙÀÌ¿À±×·¡ÇÇ */
+);
+
+ALTER TABLE DIRECTOR
+	ADD
+		CONSTRAINT PK_DIRECTOR
+		PRIMARY KEY (
+			DT_ID
+		);
+
+/* Å¬·´¼­ºñ½º */
+CREATE TABLE CGV_CLUB (
+	user_id VARCHAR2(12) NOT NULL, /* È¸¿øID */
+	club_id VARCHAR2(25) NOT NULL, /* Å¬·´ID */
+	club_cont VARCHAR2(200), /* Å¬·´³»¿ë */
+	regdate DATE DEFAULT SYSDATE /* °¡ÀÔ±â°£ */
+);
+
+ALTER TABLE CGV_CLUB
+	ADD
+		CONSTRAINT CGV_CLUB
+		PRIMARY KEY (
+			club_id
+		);
+
+/* ÇÒÀÎÁ¤º¸ */
+CREATE TABLE BENEFIT_INFO (
+	benefit_id NUMBER NOT NULL, /* ÇýÅÃID */
+	benefit_image VARCHAR2(500) NOT NULL, /* ÇýÅÃÀÌ¹ÌÁö */
+	benefit_content VARCHAR2(150), /* ÇýÅÃ³»¿ë */
+	category VARCHAR2(20) NOT NULL, /* Ä«Å×°í¸® */
+	user_id VARCHAR2(12) /* È¸¿øID */
+);
+
+ALTER TABLE BENEFIT_INFO
+	ADD
+		CONSTRAINT BENEFIT_INFO
+		PRIMARY KEY (
+			benefit_id
+		);
+
+/* ÄíÆù */
+CREATE TABLE COUP_CATEGORY (
+	COUP_ID NUMBER(15) NOT NULL, /* ÄíÆùID */
+	COUP_CATEGORY VARCHAR2(30) NOT NULL, /* ÄíÆùÄ«Å×°í¸® */
+	NAME VARCHAR2(50) NOT NULL, /* ÄíÆùÀÌ¸§ */
+	EXP_START DATE NOT NULL, /* À¯È¿±â°£_½ÃÀÛ */
+	EXP_END DATE NOT NULL, /* À¯È¿±â°£_³¡ */
+	CONTENT VARCHAR2(50), /* ¼³¸í */
+	AVA_USE VARCHAR2(10) NOT NULL, /* »ç¿ë°¡´É°æ·Î */
+	DISCOUNT NUMBER(5) NOT NULL /* ÇÒÀÎ±Ý¾× */
+);
+
+ALTER TABLE COUP_CATEGORY
+	ADD
+		CONSTRAINT PK_COUP_CATEGORY
+		PRIMARY KEY (
+			COUP_ID
+		);
+
+/* Ä«µå */
+CREATE TABLE CARD_CATEGORY (
+	CARD_ID VARCHAR2(10) NOT NULL, /* Ä«µåID */
+	CARD_CATEGORY VARCHAR2(20) NOT NULL, /* Ä«µåÄ«Å×°í¸® */
+	TOTAL NUMBER(7) NOT NULL /* ÃÑ±Ý¾× */
+);
+
+ALTER TABLE CARD_CATEGORY
+	ADD
+		CONSTRAINT PK_CARD_CATEGORY
+		PRIMARY KEY (
+			CARD_ID
+		);
+
+ALTER TABLE WISH_MOVIE
+	ADD
+		CONSTRAINT FK_USER_INFO_TO_WISH_MOVIE
+		FOREIGN KEY (
+			user_id
+		)
+		REFERENCES USER_INFO (
+			user_id
+		);
+
+ALTER TABLE WISH_MOVIE
+	ADD
+		CONSTRAINT FK_MOVIE_TO_WISH_MOVIE
+		FOREIGN KEY (
+			mv_id
+		)
+		REFERENCES MOVIE (
+			MV_ID
+		);
+
+ALTER TABLE VIEW_HISTORY
+	ADD
+		CONSTRAINT FK_USER_INFO_TO_VIEW_HISTORY
+		FOREIGN KEY (
+			user_id
+		)
+		REFERENCES USER_INFO (
+			user_id
+		);
+
+ALTER TABLE VIEW_HISTORY
+	ADD
+		CONSTRAINT FK_MOVIE_TO_VIEW_HISTORY
+		FOREIGN KEY (
+			MV_ID
+		)
+		REFERENCES MOVIE (
+			MV_ID
+		);
+
+ALTER TABLE CJ_POINT
+	ADD
+		CONSTRAINT FK_USER_INFO_TO_CJ_POINT
+		FOREIGN KEY (
+			user_id
+		)
+		REFERENCES USER_INFO (
+			user_id
+		);
+
+ALTER TABLE MY_QNA
+	ADD
+		CONSTRAINT FK_USER_INFO_TO_MY_QNA
+		FOREIGN KEY (
+			user_id
+		)
+		REFERENCES USER_INFO (
+			user_id
+		);
+
+ALTER TABLE MY_LOST
+	ADD
+		CONSTRAINT FK_USER_INFO_TO_MY_LOST
+		FOREIGN KEY (
+			user_id
+		)
+		REFERENCES USER_INFO (
+			user_id
+		);
+
+ALTER TABLE PAYCARD_COUP
+	ADD
+		CONSTRAINT FK_USER_INFO_TO_PAYCARD_COUP
+		FOREIGN KEY (
+			user_id
+		)
+		REFERENCES USER_INFO (
+			user_id
+		);
+
+ALTER TABLE PAYCARD_COUP
+	ADD
+		CONSTRAINT FK_COUP_ID_TO_PAYCARD_COUP
+		FOREIGN KEY (
+			COUP_ID
+		)
+		REFERENCES COUP_CATEGORY (
+			COUP_ID
+		);
+
+ALTER TABLE CJONE_COUP
+	ADD
+		CONSTRAINT FK_USER_INFO_TO_CJONE_COUP
+		FOREIGN KEY (
+			user_id
+		)
+		REFERENCES USER_INFO (
+			user_id
+		);
+
+ALTER TABLE CJONE_COUP
+	ADD
+		CONSTRAINT FK_COUP_CATEGORY_TO_CJONE_COUP
+		FOREIGN KEY (
+			COUP_ID
+		)
+		REFERENCES COUP_CATEGORY (
+			COUP_ID
+		);
+
+ALTER TABLE CGV_GIFTCARD
+	ADD
+		CONSTRAINT FK_USER_INFO_TO_CGV_GIFTCARD
+		FOREIGN KEY (
+			user_id
+		)
+		REFERENCES USER_INFO (
+			user_id
+		);
+
+ALTER TABLE CGV_GIFTCARD
+	ADD
+		CONSTRAINT FK_CARD_ID_TO_CGV_GIFTCARD
+		FOREIGN KEY (
+			CARD_ID
+		)
+		REFERENCES CARD_CATEGORY (
+			CARD_ID
+		);
+
+ALTER TABLE CGV_REDCARD
+	ADD
+		CONSTRAINT FK_USER_INFO_TO_CGV_REDCARD
+		FOREIGN KEY (
+			user_id
+		)
+		REFERENCES USER_INFO (
+			user_id
+		);
+
+ALTER TABLE CGV_REDCARD
+	ADD
+		CONSTRAINT FK_MOVIE_TO_CGV_REDCARD
+		FOREIGN KEY (
+			MV_ID
+		)
+		REFERENCES MOVIE (
+			MV_ID
+		);
+
+ALTER TABLE EVENT_PART
+	ADD
+		CONSTRAINT FK_USER_INFO_TO_EVENT_PART
+		FOREIGN KEY (
+			user_id
+		)
+		REFERENCES USER_INFO (
+			user_id
+		);
+
+ALTER TABLE EVENT_PART
+	ADD
+		CONSTRAINT FK_EVENT_TO_EVENT_PART
+		FOREIGN KEY (
+			event_id
+		)
+		REFERENCES EVENT (
+			EVENT_ID
+		);
+
+ALTER TABLE BOOKMARK_CGV
+	ADD
+		CONSTRAINT FK_USER_INFO_TO_BOOKMARK_CGV
+		FOREIGN KEY (
+			user_id
+		)
+		REFERENCES USER_INFO (
+			user_id
+		);
+
+ALTER TABLE BOOKMARK_CGV
+	ADD
+		CONSTRAINT FK_THEATER_TO_BOOKMARK_CGV
+		FOREIGN KEY (
+			cinema_id1
+		)
+		REFERENCES THEATER (
+			THEATER_ID
+		);
+
+ALTER TABLE BOOKMARK_CGV
+	ADD
+		CONSTRAINT FK_THEATER_TO_BOOKMARK_CGV2
+		FOREIGN KEY (
+			cinema_id2
+		)
+		REFERENCES THEATER (
+			THEATER_ID
+		);
+
+ALTER TABLE BOOKMARK_CGV
+	ADD
+		CONSTRAINT FK_THEATER_TO_BOOKMARK_CGV3
+		FOREIGN KEY (
+			cinema_id3
+		)
+		REFERENCES THEATER (
+			THEATER_ID
+		);
+
+ALTER TABLE BOOKMARK_CGV
+	ADD
+		CONSTRAINT FK_THEATER_TO_BOOKMARK_CGV4
+		FOREIGN KEY (
+			cinema_id4
+		)
+		REFERENCES THEATER (
+			THEATER_ID
+		);
+
+ALTER TABLE BOOKMARK_CGV
+	ADD
+		CONSTRAINT FK_THEATER_TO_BOOKMARK_CGV5
+		FOREIGN KEY (
+			cinema_id5
+		)
+		REFERENCES THEATER (
+			THEATER_ID
+		);
+
+ALTER TABLE CGV_COUP
+	ADD
+		CONSTRAINT FK_USER_INFO_TO_CGV_COUP
+		FOREIGN KEY (
+			user_id
+		)
+		REFERENCES USER_INFO (
+			user_id
+		);
+
+ALTER TABLE CGV_COUP
+	ADD
+		CONSTRAINT FK_COUP_CATEGORY_TO_CGV_COUP
+		FOREIGN KEY (
+			COUP_ID
+		)
+		REFERENCES COUP_CATEGORY (
+			COUP_ID
+		);
+
+ALTER TABLE VIP_GRADE
+	ADD
+		CONSTRAINT FK_USER_INFO_TO_VIP_GRADE
+		FOREIGN KEY (
+			user_id
+		)
+		REFERENCES USER_INFO (
+			user_id
+		);
+
+ALTER TABLE MY_REVIEW
+	ADD
+		CONSTRAINT FK_USER_INFO_TO_MY_REVIEW
+		FOREIGN KEY (
+			user_id
+		)
+		REFERENCES USER_INFO (
+			user_id
+		);
+
+ALTER TABLE MY_REVIEW
+	ADD
+		CONSTRAINT FK_MOVIE_TO_MY_REVIEW
+		FOREIGN KEY (
+			MV_ID
+		)
+		REFERENCES MOVIE (
+			MV_ID
+		);
+
+ALTER TABLE C_ACTOR
+	ADD
+		CONSTRAINT FK_ACTOR_TO_C_ACTOR
+		FOREIGN KEY (
+			ACT_ID
+		)
+		REFERENCES ACTOR (
+			ACT_ID
+		);
+
+ALTER TABLE C_ACTOR
+	ADD
+		CONSTRAINT FK_MOVIE_TO_C_ACTOR
+		FOREIGN KEY (
+			MV_ID
+		)
+		REFERENCES MOVIE (
+			MV_ID
+		);
+
+ALTER TABLE M_DIRECTOR
+	ADD
+		CONSTRAINT FK_DIRECTOR_TO_M_DIRECTOR
+		FOREIGN KEY (
+			DT_ID
+		)
+		REFERENCES DIRECTOR (
+			DT_ID
+		);
+
+ALTER TABLE M_DIRECTOR
+	ADD
+		CONSTRAINT FK_MOVIE_TO_M_DIRECTOR
+		FOREIGN KEY (
+			MV_ID
+		)
+		REFERENCES MOVIE (
+			MV_ID
+		);
+
+ALTER TABLE EVENT_CATEGORY
+	ADD
+		CONSTRAINT FK_EVENT_TO_EVENT_CATEGORY
+		FOREIGN KEY (
+			EVENT_ID2
+		)
+		REFERENCES EVENT (
+			EVENT_ID
+		);
+
+ALTER TABLE WINNER
+	ADD
+		CONSTRAINT FK_EVENT_TO_WINNER
+		FOREIGN KEY (
+			EVENT_ID2
+		)
+		REFERENCES EVENT (
+			EVENT_ID
+		);
+
+ALTER TABLE WINNER
+	ADD
+		CONSTRAINT FK_EVENT_PART_TO_WINNER
+		FOREIGN KEY (
+			USER_ID,
+			EVENT_ID2
+		)
+		REFERENCES EVENT_PART (
+			user_id,
+			event_id
+		);
+
+ALTER TABLE EVENT
+	ADD
+		CONSTRAINT FK_THEATER_TO_EVENT
+		FOREIGN KEY (
+			THEATER_ID
+		)
+		REFERENCES THEATER (
+			THEATER_ID
+		);
+
+ALTER TABLE payment
+	ADD
+		CONSTRAINT FK_STORE_TO_payment
+		FOREIGN KEY (
+			sotore_id
+		)
+		REFERENCES STORE (
+			sotore_id
+		);
+
+ALTER TABLE payment
+	ADD
+		CONSTRAINT FK_BASKET_TO_payment
+		FOREIGN KEY (
+			b_id
+		)
+		REFERENCES BASKET (
+			b_id
+		);
+
+ALTER TABLE payment
+	ADD
+		CONSTRAINT FK_USER_INFO_TO_payment
+		FOREIGN KEY (
+			user_id
+		)
+		REFERENCES USER_INFO (
+			user_id
+		);
+
+ALTER TABLE BASKET
+	ADD
+		CONSTRAINT FK_STORE_TO_BASKET
+		FOREIGN KEY (
+			sotore_id
+		)
+		REFERENCES STORE (
+			sotore_id
+		);
+
+ALTER TABLE BASKET
+	ADD
+		CONSTRAINT FK_USER_INFO_TO_BASKET
+		FOREIGN KEY (
+			user_id
+		)
+		REFERENCES USER_INFO (
+			user_id
+		);
+
+ALTER TABLE MOVIE_PAY
+	ADD
+		CONSTRAINT FK_MOVIE_RS_TO_MOVIE_PAY
+		FOREIGN KEY (
+			MVRS_ID
+		)
+		REFERENCES MOVIE_RS (
+			MVRS_ID
+		);
+
+ALTER TABLE MOVIE_PAY
+	ADD
+		CONSTRAINT FK_SHOW_TO_MOVIE_PAY
+		FOREIGN KEY (
+			SHOW_ID
+		)
+		REFERENCES SHOW (
+			SHOW_ID
+		);
+
+ALTER TABLE MOVIE_PAY
+	ADD
+		CONSTRAINT FK_GIFTCARD_TO_MOVIE_PAY
+		FOREIGN KEY (
+			COL2
+		)
+		REFERENCES GIFTCARD (
+			giftcard_ID
+		);
+
+ALTER TABLE MOVIE_PAY
+	ADD
+		CONSTRAINT FK_DIS_CARD_TO_MOVIE_PAY
+		FOREIGN KEY (
+			PAY_WAY
+		)
+		REFERENCES DIS_CARD (
+			card_id
+		);
+
+ALTER TABLE MOVIE_PAY
+	ADD
+		CONSTRAINT FK_USER_INFO_TO_MOVIE_PAY
+		FOREIGN KEY (
+			COL
+		)
+		REFERENCES USER_INFO (
+			user_id
+		);
+
+ALTER TABLE SCREEN
+	ADD
+		CONSTRAINT FK_THEATER_TO_SCREEN
+		FOREIGN KEY (
+			THEATER_ID
+		)
+		REFERENCES THEATER (
+			THEATER_ID
+		);
+
+ALTER TABLE SCREEN
+	ADD
+		CONSTRAINT FK_SCREEN_CAT_TO_SCREEN
+		FOREIGN KEY (
+			SCREEN_CATEGORY_ID
+		)
+		REFERENCES SCREEN_CAT (
+			SCREEN_CATEGORY_ID
+		);
+
+ALTER TABLE SEAT
+	ADD
+		CONSTRAINT FK_SCREEN_TO_SEAT
+		FOREIGN KEY (
+			SCREEN_ID
+		)
+		REFERENCES SCREEN (
+			SCREEN_ID
+		);
+
+ALTER TABLE SHOW
+	ADD
+		CONSTRAINT FK_SCREEN_TO_SHOW
+		FOREIGN KEY (
+			SCREEN_ID
+		)
+		REFERENCES SCREEN (
+			SCREEN_ID
+		);
+
+ALTER TABLE SHOW
+	ADD
+		CONSTRAINT FK_MOVIE_TO_SHOW
+		FOREIGN KEY (
+			MOVIE_ID
+		)
+		REFERENCES MOVIE (
+			MV_ID
+		);
+
+ALTER TABLE MOVIE_RS
+	ADD
+		CONSTRAINT FK_SHOW_TO_MOVIE_RS
+		FOREIGN KEY (
+			SHOW_ID
+		)
+		REFERENCES SHOW (
+			SHOW_ID
+		);
+
+ALTER TABLE MOVIE_RS
+	ADD
+		CONSTRAINT FK_SEAT_TO_MOVIE_RS
+		FOREIGN KEY (
+			SCREEN_ID,
+			SEAT_CODE
+		)
+		REFERENCES SEAT (
+			SCREEN_ID,
+			SEAT_CODE
+		);
+
+ALTER TABLE MOVIE_RS
+	ADD
+		CONSTRAINT FK_USER_INFO_TO_MOVIE_RS
+		FOREIGN KEY (
+			COL3
+		)
+		REFERENCES USER_INFO (
+			user_id
+		);
+
+ALTER TABLE THEATER
+	ADD
+		CONSTRAINT FK_REGION_TO_THEATER
+		FOREIGN KEY (
+			REGION_ID
+		)
+		REFERENCES REGION (
+			REGION_ID
+		);
+
+ALTER TABLE EMOTION_POINT
+	ADD
+		CONSTRAINT FK_MOVIE_TO_EMOTION_POINT
+		FOREIGN KEY (
+			MV_ID
+		)
+		REFERENCES MOVIE (
+			MV_ID
+		);
+
+ALTER TABLE TRAILER
+	ADD
+		CONSTRAINT FK_MOVIE_TO_TRAILER
+		FOREIGN KEY (
+			MV_ID
+		)
+		REFERENCES MOVIE (
+			MV_ID
+		);
+
+ALTER TABLE ATTR_POINT
+	ADD
+		CONSTRAINT FK_MOVIE_TO_ATTR_POINT
+		FOREIGN KEY (
+			MV_ID
+		)
+		REFERENCES MOVIE (
+			MV_ID
+		);
+
+ALTER TABLE MV_REVIEW
+	ADD
+		CONSTRAINT FK_MOVIE_TO_MV_REVIEW
+		FOREIGN KEY (
+			MV_ID
+		)
+		REFERENCES MOVIE (
+			MV_ID
+		);
+
+ALTER TABLE MV_REVIEW
+	ADD
+		CONSTRAINT FK_USER_INFO_TO_MV_REVIEW
+		FOREIGN KEY (
+			user_id
+		)
+		REFERENCES USER_INFO (
+			user_id
+		);
+
+ALTER TABLE CGV_CLUB
+	ADD
+		CONSTRAINT FK_USER_INFO_TO_CGV_CLUB
+		FOREIGN KEY (
+			user_id
+		)
+		REFERENCES USER_INFO (
+			user_id
+		);
+
+ALTER TABLE BENEFIT_INFO
+	ADD
+		CONSTRAINT FK_USER_INFO_TO_BENEFIT_INFO
+		FOREIGN KEY (
+			user_id
+		)
+		REFERENCES USER_INFO (
+			user_id
+		);

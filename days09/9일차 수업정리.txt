@@ -1,0 +1,77 @@
+[오라클 자료형]
+1) CHAR
+2) NCHAR  // N(UNICODE) + CHAR
+    - NCHAR(size == 문자)
+    
+3) VARCHAR2 
+    - 가변길이
+    - 4000 byte
+    - 데이터가 최대 크기보다 작으면 공간은 줄어든다.
+    - 반드시 최대값을 지정해야 함
+    
+4) NVARCHAR2
+
+5) LONG(잘 안쓴다)
+    - 가변 문자 자료형, 2GB
+    
+6) NUMBER
+    - NUMBER[(전체 자릿수(p), [, 소수점이하 자릿수(s)])]
+    - p(precision) 정확도, 전체 자릿수 1~38
+    - s(scale) 소수점 이하 자릿수 -83~127
+    - NUMBER(4) - 정수, NUMBER(5,2) - 실수
+    - NUMBER로만 나타내는 것은 precision과 scale을 최대값으로 지정하는 것이다.
+        // NUMBER = NUMBER(38, 127)
+    - NUMBER(p)는 NUMBER(p,0)와 같은 의미이다.
+        // NUMBER(3) = NUMBER(3, 0)
+        
+7) FLOAT(잘 안쓸 거 같음) == NUMBER
+
+8) DATE
+     - 날짜 + 시간(초) 7byte
+        
+9) TIMESTAMP
+    - DATE + ms, ns
+    - TIMESTAMP[(n)] // n 은 기본값이 6 -> milli second 6자리
+    
+    
+10) RAW(size), LONG RAW
+    - 2진 데이터를 저장
+    - 예) 이미지 파일, 실행 파일 -> 2진 데이터 -> DB 저장
+    
+11) BLOB
+    - Binary Large Object
+    - 4GB
+    - 만약 LONG RAW(2GB) 보다 크다면 사용
+    
+12) CLOB(4GB)
+    NCLOB(4GB)
+    
+
+예) 학생정보를 저장하고 관리하는 테이블 생성
+    학번 : NUMBER(7) [CHAR] 고정 길이, 한글x
+    이름 : 가변길이 NVARCHAR(10) 한글 10문자 이름까지 저장
+                // 만약 이름이 길다면 테이블 수정(컬럼 크기)
+    국, 영, 수, 총 : NUMBER(3) 체크제약조건(0~100정수)
+    평균 : NUMBER(5,2)
+    등수 : NUMBER(3)
+    생일 : 날짜 [DATE] TIMESTA<P X
+    주민등록번호 : [CHAR(14)], NCHAR X
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+
+

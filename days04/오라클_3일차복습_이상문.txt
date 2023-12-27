@@ -1,0 +1,242 @@
+﻿1. 서브쿼리(subquery) 에 대해서 설명하세요.
+
+	내가 원하는 SELECT 절을  사용할 수 있다.
+
+1-2. 인라인뷰(inline view)에 대해서 설명하세요.
+
+	FROM 절에서 쓸 수 있는 문법이다.
+	뷰가 임시로 생긴다.
+	
+
+1-3. WITH 절에 대해서 설명하세요.
+
+	SELECT 보다 우선순위가 높아 별칭사용할 수 있다.
+
+1-4. emp 테이블에서
+   pay(sal+comm)  1000 이상~ 3000 이하 받는  
+   30부서원을 제외한 모든 사원들만 
+   ename을 기준으로 오름차순 정렬해서 조회하는 쿼리를 작성하세요.  
+    (1) 일반 쿼리 사용.    
+
+	SELECT emp.*, sal+NVL(comm, 0) pay
+	FROM emp
+	WHERE (sal+NVL(comm, 0) NOT BETWEEN 1000 AND 3000) AND (deptno NOT IN 30);
+	ORDER BY ename;
+
+    (2) inline view 사용 
+
+	SELECT *
+	FROM (
+    		SELECT emp.*, sal+NVL(comm, 0) pay
+    		FROM emp
+    	)
+	WHERE (pay NOT BETWEEN 1000 AND 3000) AND (deptno NOT IN 30);
+	ORDER BY ename;
+
+    (3) with 절 사용   
+
+	WITH e AS(
+    		SELECT emp.*, sal+NVL(comm, 0) pay
+    		FROM emp
+	)
+	SELECT e.*, e.pay
+	FROM e
+	WHERE (e.pay NOT BETWEEN 1000 AND 3000) AND (deptno NOT IN 30);
+	ORDER BY ename;
+
+
+3. 지금까지 배운 [Oracle 함수]를 적고 설명하세요 .
+
+	EXTRACT( .. from ..)	- 날짜 추출
+	SUBSTR(str, a, b)		- 문자열 a부터 b개를 추출
+	TO_CHAR			- 문자열로 변환, 원하는 형식으로도 변환 가능
+	CONCAT			- 문자열 결합
+	UPPER			- 문자열을 대문자로 변경
+	LOWER			- 문자열을 소문자로 변경
+	NVL			- 값이 널이면 디폴트값을 줄 수 있다.
+
+
+3-2. 지금까지 배운 오라클의 연산자(operator)를 적으세요.  
+
+	문자열 결합 - ||
+	일반 연산자 - =  !=  ^=  <>  <  >  <=  >=
+	논리 연산자 - AND, OR, NOT
+	SQL 연산자 - 	[NOT] IN (list)
+			[NOT] BETWEEN a AND b
+			IS [NOT] NULL
+			LIKE
+			EXIST
+			ANY, SOME
+
+
+4. insa테이블에서 ssn 컬럼을 통해서 year, month, date, gender 출력
+      SSN          YEAR MONTH DATE GENDER  
+    ---------- ------ ---- ----- -----
+    771212-1022432	77	12	12	1
+    801007-1544236	80	10	07	1
+    770922-2312547	77	09	22	2
+    790304-1788896	79	03	04	1
+    811112-1566789	81	11	12	1
+    :
+    60개 행이 선택되었습니다. 
+
+	SELECT ssn
+       		, SUBSTR(ssn, 1, 2) year
+        		, SUBSTR(ssn, 3, 2) month  
+        		, SUBSTR(ssn, 5, 2) "date"
+       		, SUBSTR(ssn, 8, 1) gender
+	FROM insa;
+
+
+4-2. 16. emp 테이블에서 입사년도 컬럼에서 년,월,일 찾아서 출력
+    ㄱ. 년도 찾을 때는 TO_CHAR() 함수 사용
+    ㄴ. 월 찾을 때는 SUBSTR() 함수 사용
+    
+    ENAME      HIREDATE YEAR MONTH DATE
+    ---------- -------- ---- -- --
+    SMITH      80/12/17 1980 12 17
+    ALLEN      81/02/20 1981 02 20
+    WARD       81/02/22 1981 02 22
+    JONES      81/04/02 1981 04 02
+    MARTIN     81/09/28 1981 09 28
+    BLAKE      81/05/01 1981 05 01
+    CLARK      81/06/09 1981 06 09
+    KING       81/11/17 1981 11 17
+    TURNER     81/09/08 1981 09 08
+    JAMES      81/12/03 1981 12 03
+    FORD       81/12/03 1981 12 03
+    MILLER     82/01/23 1982 01 23
+
+12개 행이 선택되었습니다.
+
+	SELECT ename, hiredate, TO_CHAR(hiredate, 'YY') year, SUBSTR(hiredate, 4, 2) month, TO_CHAR(hiredate, 'DD') "date"
+	FROM emp;
+
+4-3.insa 테이블에서 70년대생 남자사원만 아래와 같이 주민등록번호로 정렬해서 출력하세요.
+    NAME                 RRN           
+    -------------------- --------------
+    문길수               721217-1******
+    김인수               731211-1******
+    김종서               751010-1******
+    허경운               760105-1******
+    정한국               760909-1******
+    최석규               770129-1******
+    지재환               771115-1******
+    홍길동               771212-1******
+    산마루               780505-1******
+    장인철               780506-1******
+    박문수               780710-1******
+    이상헌               781010-1******
+    김정훈               790304-1******
+    박세열               790509-1******
+    이기상               790604-1******
+    
+    15개 행이 선택되었습니다. 
+
+	SELECT name, SUBSTR(ssn, 1, 8) || '******' rrn
+	FROM insa
+	WHERE (SUBSTR(ssn, 1, 2) BETWEEN '70' AND '79') AND (SUBSTR(ssn, 8, 1) = '1')
+	ORDER BY ssn;
+
+
+5. insa 테이블에서 70년대 12월생 모든 남자 사원만 아래와 같이 주민등록번호로 정렬해서 출력하세요.
+
+    NAME                 SSN           
+    -------------------- --------------
+    문길수               721217-1951357
+    김인수               731211-1214576
+    홍길동               771212-1022432 
+
+	SELECT name, ssn 
+	FROM insa
+	WHERE (SUBSTR(ssn, 1, 2) BETWEEN '70' AND '79') AND (SUBSTR(ssn, 3, 2) = '12')
+	ORDER BY ssn;
+
+    
+6. emp 테이블에서 직속상사가 NULL일 경우 'BOSS' 로 출력하고 
+   커미션이 NULL 일경우 0으로 처리해서 출력
+
+	SELECT NVL(comm, 0) comm, NVL(TO_CHAR(mgr), 'BOSS') mgr 
+	FROM emp;
+
+6-2. insa 테이블에서 연락처가 없는 사원은 '연락처 등록 안됨'으로 출력
+
+	SELECT NVL(tel, '연락처 등록 안됨') tel
+	FROM insa;
+
+6-3. insa 테이블에서 num, name, tel 컬럼만 출력할 때 연락처가 없는 사원은 X
+    있으면 O 으로 개발부만 출력
+
+    NAME                 SSN            GENDER
+    -------------------- -------------- ------
+    홍길동               771212-1022432    X
+    이순신               801007-1544236    X
+    이순애               770922-2312547    O
+    김정훈               790304-1788896    X    
+
+	SELECT name, ssn,  NVL2(tel, 'O', 'X') tel
+	FROM insa
+	WHERE buseo='개발부';
+
+    
+7. RR과 YY의 차이점을 설명하세요 .
+
+	??
+
+8. dept 테이블 조회
+	
+	SELECT *
+	FROM dept;
+
+
+8-2. dept 테이블에   deptno = 50,  dname = QC,  loc = SEOUL  로 새로운 부서정보 추가
+
+	INSERT INTO dept(deptno, dname, loc)
+	VALUES(50, 'QC', 'SEOUL');
+	
+
+8-3. dept 테이블에 QC 부서를 찾아서 부서명(dname)과 지역(loc)을 
+   dname = 현재부서명에 2를 추가,  loc = POHANG 으로 수정
+
+	UPDATE dept SET dname='QC2', loc='POHANG'
+	WHERE dname='QC';
+
+8-3. dept 테이블에서 QC2 부서를 찾아서 deptno(PK)를 사용해서 삭제
+
+	??
+
+9. 시노님(synonym)이란? 
+
+	테이블에 별명을 주는 것이다.
+
+9-2. 모든 사용자가  scott 계정 소유의 dept 테이블을    sdept 라는 이름으로 사용할 수 있
+도록 시노님을 생성하고 hr 계정이 사용하는 과정 쿼리를 순서대로 적으로세요.. 
+
+	CREATE PUBLIC SYNONYM sdept
+	FOR scott.dept;
+
+	GRANT SELECT ON sdept TO hr;
+
+10. emp 테이블에서 급여를 가장 많이 받는 사원의 정보를 조회.
+
+	SELECT *
+	FROM emp
+	WHERE sal+NVL(comm, 0) = (SELECT MAX(sal+NVL(comm, 0)) FROM emp);
+
+10-2. emp 테이블에서 급여를 가장 적게 받는 사원의 정보를 조회.
+
+	SELECT *
+	FROM emp
+	WHERE sal+NVL(comm, 0) = (SELECT MIN(sal+NVL(comm, 0)) FROM emp);
+
+
+11. 5. 현재 시스템의 날짜 출력하는 쿼리를 작성하세요. 
+SELECT ( ㄱ ), ( ㄴ ) 
+FROM dual;
+
+
+	SELECT EXTRACT(YEAR FROM SYSDATE), EXTRACT(MONTH FROM SYSDATE)
+	FROM dual;
+
+
+    

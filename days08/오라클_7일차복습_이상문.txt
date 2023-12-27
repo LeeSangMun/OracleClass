@@ -1,0 +1,261 @@
+﻿1. emp 테이블에서 sal가 상위 20% 사원 정보 조회.
+
+	SELECT *
+	FROM(
+   	 	SELECT ename, sal
+      	 	, RANK() OVER(ORDER BY sal DESC) "순위"
+    	FROM emp
+	)
+	WHERE 순위 <= 12*0.2;
+
+   
+2. emp 에서 각 사원의 급여가 전체급여의 몇 %가 되는 지 조회.
+       ( %   소수점 3자리에서 반올림하세요 )
+            무조건 소수점 2자리까지는 출력.. 7.00%,  3.50%     
+
+ENAME             PAY   TOTALPAY 비율     
+---------- ---------- ---------- -------
+SMITH             800      27125   2.95%
+ALLEN            1900      27125   7.00%
+WARD             1750      27125   6.45%
+JONES            2975      27125  10.97%
+MARTIN           2650      27125   9.77%
+BLAKE            2850      27125  10.51%
+CLARK            2450      27125   9.03%
+KING             5000      27125  18.43%
+TURNER           1500      27125   5.53%
+JAMES             950      27125   3.50%
+FORD             3000      27125  11.06%
+MILLER           1300      27125   4.79%
+
+12개 행이 선택되었습니다.         
+
+	SELECT ename, pay, total_pay
+    		, TO_CHAR(ROUND((pay/total_pay)*10000)/100, '99.00')||'%' "비율"
+	FROM (
+    		SELECT ename 
+      	  		, sal+NVL(comm,0) pay
+      	  		, (SELECT SUM(sal+NVL(comm,0)) FROM emp) total_pay
+   	 	FROM emp
+	) e;
+
+
+3. insa 에서 사원들의 만나이 계산해서 출력
+  ( 만나이 = 올해년도 - 출생년도          - 1( 생일이지나지 않으면) )
+
+	SELECT ssn
+    		, cur_year-birth_year + DECODE(is_check_year, -1, -1, 0) 만나이
+	FROM (
+   	 	SELECT ssn
+        			, EXTRACT(YEAR FROM SYSDATE) cur_year
+        			, CASE
+           				WHEN SUBSTR(ssn,8,1) IN (1,2,5,6) THEN 1900
+            			WHEN SUBSTR(ssn,8,1) IN (3,4,7,8) THEN 2000
+            			ELSE 1800
+          			END + SUBSTR(ssn, 0, 2) birth_year
+        		, SIGN(TRUNC(SYSDATE)-TO_DATE(SUBSTR(ssn, 3, 4), 'MMDD')) is_check_year
+    		FROM insa
+	)
+ 
+  
+4. insa 테이블에서 아래와 같이 결과가 나오게 ..
+     [총사원수]      [남자사원수]      [여자사원수] [남사원들의 총급여합]  [여사원들의 총급여합] [남자-max(급여)] [여자-max(급여)]
+---------- ---------- ---------- ---------- ---------- ---------- ----------
+        60                31              29           51961200                41430400                  2650000          2550000
+ 
+
+	SELECT COUNT(*) "총사원수"
+   		, COUNT(DECODE(MOD(SUBSTR(ssn,8,1),2),1,' ')) "남자사원수"
+    		, COUNT(DECODE(MOD(SUBSTR(ssn,8,1),2),0,' ')) "여자사원수"
+   		, SUM(DECODE(MOD(SUBSTR(ssn,8,1),2),1,basicpay)) "남사원들의 총급여합"
+    		, SUM(DECODE(MOD(SUBSTR(ssn,8,1),2),0,basicpay)) "여사원들의 총급여합"
+    		, MAX(DECODE(MOD(SUBSTR(ssn,8,1),2),1,basicpay)) "남자-max(급여)"
+    		, MAX(DECODE(MOD(SUBSTR(ssn,8,1),2),0,basicpay)) "여자-max(급여)"
+	FROM insa;
+
+
+5. 순위(RANK) 함수 사용해서 풀기 
+   emp 에서 각 부서별 최고급여를 받는 사원의 정보 출력
+   
+    DEPTNO ENAME             PAY DEPTNO_RANK
+---------- ---------- ---------- -----------
+        10 KING             5000           1
+        20 FORD             3000           1
+        30 BLAKE            2850           1
+
+	SELECT *
+	FROM (
+    		SELECT deptno, ename, sal+NVL(comm, 0) pay
+        		, RANK()OVER(PARTITION BY deptno ORDER BY sal+NVL(comm, 0) DESC) deptno_rank
+   	FROM emp
+	)
+	WHERE deptno_rank=1;
+
+  
+6. emp테이블에서 각 부서의 사원수, 부서총급여합, 부서평균을 아래와 같이 출력하는 쿼리 작성.
+결과)
+    DEPTNO       부서원수       총급여합    	     평균
+---------- ---------- 		---------- 	----------
+        10          3      	 8750    	2916.67
+        20          3     	  6775    	2258.33
+        30          6     	 11600    	1933.33     
+ 
+	SELECT deptno
+    		, COUNT(*) "부서원수"
+    		, SUM(sal+NVL(comm,0)) "총급여합"
+   		, ROUND(AVG(sal+NVL(comm,0)), 2) "평균"
+	FROM emp
+	GROUP BY deptno
+	ORDER BY deptno;
+
+
+7.  insa 테이블에서 
+[실행결과]
+                                           부서사원수/전체사원수 == 부/전 비율
+                                           부서의 해당성별사원수/전체사원수 == 부성/전%
+                                           부서의 해당성별사원수/부서사원수 == 성/부%
+                                           
+부서명     총사원수 부서사원수 성별  성별사원수  부/전%   부성/전%   성/부%
+개발부	    60	    14	      F	    8	    23.3%	  13.3%	    57.1%
+개발부	    60	    14	      M	    6	    23.3%	  10%	    42.9%
+기획부	    60	    7	      F	    3	    11.7%	    5%	    42.9%
+기획부	    60	    7	      M	    4	    11.7%	6.7%	    57.1%
+영업부	    60	    16	      F	    8	    26.7%	13.3%	    50%
+영업부	    60	    16	      M	    8	    26.7%	13.3%	    50%
+인사부	    60	    4	      M	    4	    6.7%	6.7%	    100%
+자재부	    60	    6	      F	    4	    10%	    6.7%	    66.7%
+자재부	    60	    6	      M	    2	    10%	    3.3%	    33.3%
+총무부	    60	    7	      F	    3	    11.7%	5%	        42.9%
+총무부	    60	    7	      M 	4	    11.7%	6.7%	    57.1%
+홍보부	    60	    6	      F	    3	    10%	    5%	        50%
+홍보부	    60	    6	      M	    3	    10%	    5%	        50%    
+
+	SELECT t.*
+    		, ROUND((부서사원수/총사원수)*100, 1) || '%' "부/전%"
+    		, ROUND((성별사원수/총사원수)*100, 1) || '%' "부성/전%"
+   		, ROUND((성별사원수/부서사원수)*100, 1) || '%' "성/부%"
+	FROM (
+    		SELECT buseo
+        			, (SELECT COUNT(*) FROM insa) "총사원수"
+        			, (SELECT COUNT(*) FROM insa WHERE i.buseo=buseo) "부서사원수"
+        			, DECODE(MOD(SUBSTR(ssn, 8, 1), 2), '1', 'M', 'F') "성별"
+        			, COUNT(*) "성별사원수"
+    		FROM insa i
+    	GROUP BY buseo, MOD(SUBSTR(ssn, 8, 1), 2)
+    	ORDER BY buseo
+	) t;
+
+ 
+8. PATITION  OUTER JOIN 문제 ( 부서에서 사원이 없는 출신지역도 출력 ~ )
+  insa테이블에서 각 부서별 출신지역별 인원수 출력
+개발부	강원	1
+개발부	경기	3
+개발부	경남	1
+개발부	경북	1
+개발부	부산	1
+개발부	서울	2
+개발부	인천	6
+개발부	전남	1
+개발부	전북	1
+개발부	제주	1
+개발부	충남	1
+
+기획부	강원	1
+기획부	경기	2
+기획부	경남	1
+기획부	경북	1
+기획부	부산	1
+기획부	서울	3
+기획부	인천	1
+기획부	전남	1
+기획부	전북	1
+기획부	제주	1
+기획부	충남	1
+영업부	강원	1 
+ :
+
+	SELECT buseo, c.city, COUNT(i.name)
+	FROM (SELECT DISTINCT city FROM insa) c LEFT OUTER JOIN insa i PARTITION BY (buseo) ON c.city=i.city
+	GROUP BY buseo, c.city; 
+ 
+
+9-1.  COUNT(), DECODE() 사용.
+  [실행결과]
+       CLERK   SALESMAN  PRESIDENT    MANAGER    ANALYST
+---------- ---------- ---------- ---------- ----------
+         3          4          1          3          1
+         
+      SELECT COUNT(DECODE(job, 'CLERK', ' ')) CLERK
+    	, COUNT(DECODE(job, 'SALESMAN', ' ')) SALESMAN
+    	, COUNT(DECODE(job, 'PRESIDENT', ' ')) PRESIDENT
+    	, COUNT(DECODE(job, 'MANAGER', ' ')) MANAGER
+    	, COUNT(DECODE(job, 'ANALYST', ' ')) ANALYST
+      FROM emp;
+        
+9-2.  PIVOT() 사용.
+  [실행결과]
+       CLERK   SALESMAN  PRESIDENT    MANAGER    ANALYST
+---------- ---------- ---------- ---------- ----------
+         3          4          1          3          1
+        	SELECT *
+	FROM (SELECT JOB FROM emp)
+	PIVOT(
+    		COUNT(*)
+    		FOR job
+    		IN('CLERK', 'SALESMAN', 'PRESIDENT', 'MANAGER', 'ANALYST')
+	);
+
+10. emp 테이블에서 각 JOB별 입사년도별 1월~ 12월 입사인원수 출력.  ( PIVOT() 함수 사용 ) 
+    [실행결과]
+    ANALYST		1981	0	0	0	0	0	0	0	0	0	0	0	1
+    CLERK		1980	0	0	0	0	0	0	0	0	0	0	0	1
+    CLERK		1981	0	0	0	0	0	0	0	0	0	0	0	1
+    CLERK		1982	1	0	0	0	0	0	0	0	0	0	0	0
+    MANAGER		1981	0	0	0	1	1	1	0	0	0	0	0	0
+    PRESIDENT	1981	0	0	0	0	0	0	0	0	0	0	1	0
+    SALESMAN	1981	0	2	0	0	0	0	0	0   0	0	0	0	               
+    
+    	SELECT *
+	FROM (SELECT job, TO_CHAR(hiredate, 'RRRR') h_year, EXTRACT(MONTH FROM hiredate)||'월' h_month FROM emp)
+	PIVOT(
+    		COUNT(*)
+    		FOR h_month
+    		IN ('1월', '2월', '3월', '4월',
+        		    '5월', '6월', '7월', '8월',
+        		    '9월', '10월', '11월', '12월')
+	)
+	ORDER BY job;
+
+11. SMS 인증번호  임의의  6자리 숫자 출력 ( dbms_random  패키지 사용 )
+
+	SELECT FLOOR(dbms_random.value*(999999-100000+1)+100000)
+	FROM dual;
+   
+12. 아래와 같이 출력하세요 .  ( LISTAGG 함수 사용 ) 
+[실행결과]
+10	CLARK/MILLER/KING
+20	FORD/JONES/SMITH
+30	ALLEN/BLAKE/JAMES/MARTIN/TURNER/WARD
+40  사원없음    
+
+	SELECT d.deptno
+    		, NVL(LISTAGG(ename, '/') WITHIN GROUP(ORDER BY ename), '사원없음')
+	FROM emp e RIGHT OUTER JOIN dept d ON e.deptno=d.deptno
+	GROUP BY d.deptno;
+
+13.  emp 테이블에서 30번인 부서의 최고, 최저 SAL을 출력하는 쿼리 작성.
+
+	SELECT MAX(sal) max_sal, MIN(sal) min_sal
+	FROM emp
+	WHERE deptno=30;
+
+13-2. emp 테이블에서 30번인 부서의 최고, 최저 SAL를 받는 사원의 정보 출력하는 쿼리 작성.
+
+
+
+
+14. emp 테이블에서 사원수가 가장작은 부서명과 사원수, 가장 많은 부서명과 사원수 출력
+ 
+
+
+

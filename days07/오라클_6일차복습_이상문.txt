@@ -1,0 +1,192 @@
+﻿1. 오늘 날짜를 TO_CHAR() 함수를 사용해서
+  '2023년 08월 30일 오후 14:03:32 (월)' 형식으로 출력
+  
+	SELECT TO_CHAR(SYSDATE, 'YYYY') || '년' 
+  		 || TO_CHAR(SYSDATE, ' MM') || '월' 
+   		 || TO_CHAR(SYSDATE, ' DD') || '일' 
+   		 || TO_CHAR(SYSDATE, ' TS (DY)')
+	FROM dual;
+
+
+2. 우리가 수료일 ( '2023.12.27' ) 
+   오늘부터 수료일 까지 남은 일수 ?   
+
+	SELECT TO_DATE('2023.12.27') - SYSDATE
+	FROM dual;
+
+3. emp 테이블의 사원번호를 6자리로 출력하기. 
+    [ 출력 결과 예]
+    7369	 007369
+    7499	 007499
+    7521	 007521
+    7566	 007566
+    7654	 007654 
+
+	SELECT empno, LPAD(empno, 6, '0')
+	FROM emp;
+
+
+4.  emp 테이블에서 각 사원의 번호, 이름, 급여(pay) 출력.
+    1) 10번 부서원은 15% 급여(pay) 인상
+    2) 20번 부서원은 30% 급여(pay) 인상
+    3) 그 외 부서원은 5% 급여(pay) 인상
+    이 되는 쿼리 작성하세요.. 
+    ( DECODE, CASE 함수 )  
+
+SELECT empno, ename, sal+NVL(comm, 0) pay
+    , (sal+NVL(comm, 0))*DECODE(deptno, 10, 1.15
+                                     	   , 20, 1.3
+                                                       , 1.05) "DECODE 인상액"
+    , (sal+NVL(comm, 0))*CASE deptno
+                            	WHEN 10 THEN 1.15
+                            	WHEN 20 THEN 1.3
+                            	ELSE 1.05
+                              END "CASE 인상액"
+FROM emp;
+
+
+5. emp 테이블의 각 부서별 사원수가 3명 이하인 부서 조회
+  ( 조건 : 40번 부서도 0 으로 출력, OUTER JOIN 사용 )
+  
+  [실행 결과]
+     DEPTNO         COUNT 
+---------- --------------
+        10              3
+        20              3
+        40              0 
+
+	SELECT d.deptno, COUNT(e.ename)
+	FROM emp e RIGHT OUTER JOIN dept d
+	ON d.deptno=e.deptno
+	GROUP BY d.deptno
+	HAVING COUNT(e.ename) <= 3
+	ORDER BY d.deptno;
+
+
+
+
+5-2. emp 테이블에서 각 부서의 사원수를 조회
+    ( 조건 : DECODE, COUNT 함수 사용 ) 
+        
+	SELECT DISTINCT deptno
+   		 , DECODE(deptno, 10, (SELECT COUNT(*) FROM emp WHERE e.deptno=deptno)
+                 		          , 20, (SELECT COUNT(*) FROM emp WHERE e.deptno=deptno)
+                  		          , 30, (SELECT COUNT(*) FROM emp WHERE e.deptno=deptno)) cnt
+	FROM emp e
+	ORDER BY deptno;
+
+
+6. 정규 표현식을 사용하는 함수를 모두 적으세요 . 
+
+	REGEXP_LIKE
+	REGEXP_INSTR
+	REGEXP_REPLACE
+	REGEXP_
+
+7. emp 테이블에서 부서별, job별 사원의 급여합을 조회.
+
+  [실행 결과] 
+    DEPTNO JOB          SUM_PAY
+---------- --------- ----------
+        10 CLERK           1300
+        10 MANAGER         2450
+        10 PRESIDENT       5000
+        20 ANALYST         3000
+        20 CLERK            800
+        20 MANAGER         2975
+        30 CLERK            950
+        30 MANAGER         2850
+        30 SALESMAN        7800
+
+	SELECT deptno, job, SUM(sal+NVL(comm, 0)) sum_pay
+	FROM emp
+	GROUP BY deptno, job
+	ORDER BY deptno;
+
+        
+8. emp 테이블에서 각 부서별 총급여합 조회
+  1) GROUP BY 절 사용
+	
+	SELECT deptno, sum(sal+NVL(comm,0))
+	FROM emp
+	GROUP BY deptno;
+
+  2) DECODE, SUM 함수 사용
+
+	SELECT DISTINCT deptno
+  	 	, DECODE(deptno, 10, (SELECT SUM(sal+NVL(comm,0)) FROM emp WHERE e.deptno=deptno)
+          	                                 , 20, (SELECT SUM(sal+NVL(comm,0)) FROM emp WHERE e.deptno=deptno)
+                  	                     , 30, (SELECT SUM(sal+NVL(comm,0)) FROM emp WHERE e.deptno=deptno)) sum_pay
+	FROM emp e
+	ORDER BY deptno;
+
+        
+9. emp 테이블에서 각 부서별, job 별 총급여합 조회   
+  [실행 결과] 
+    DEPTNO JOB          SUM_PAY
+---------- --------- ----------
+        10 CLERK           1300
+        10 MANAGER         2450
+        10 PRESIDENT       5000
+        20 ANALYST         3000
+        20 CLERK            800
+        20 MANAGER         2975
+        30 CLERK            950
+        30 MANAGER         2850
+        30 SALESMAN        7800
+
+9개 행이 선택되었습니다. 
+
+
+( 안 풀어도 됩니다. )
+9-2. emp 테이블에서 각 부서별, job 별 총급여합 조회 
+  [실행 결과] 
+    DEPTNO JOB          SUM_PAY
+---------- --------- ----------
+        10 ANALYST            0
+        10 CLERK           1300
+        10 MANAGER         2450
+        10 PRESIDENT       5000
+        10 SALESMAN           0
+        20 ANALYST         3000
+        20 CLERK            800
+        20 MANAGER         2975
+        20 PRESIDENT          0
+        20 SALESMAN           0
+        30 ANALYST            0
+
+    DEPTNO JOB          SUM_PAY
+---------- --------- ----------
+        30 CLERK            950
+        30 MANAGER         2850
+        30 PRESIDENT          0
+        30 SALESMAN        7800
+
+15개 행이 선택되었습니다. 
+        
+
+
+10.  empno, dname, ename, hiredate 컬럼 조회 ( JOIN )
+
+ [실행결과]
+7369	RESEARCH	SMITH	80/12/17
+7499	SALES	ALLEN	81/02/20
+7521	SALES	WARD	81/02/22
+
+	SELECT empno, dname, ename, hiredate
+	FROM emp e JOIN dept d ON e.deptno=d.deptno;
+
+
+
+11. insa테이블에서 여자인원수가 5명 이상인 부서만 출력.  
+
+ [실행결과]
+BUSEO               COUNT
+--------------- ----------
+개발부                   8
+영업부                   8
+
+	SELECT buseo, COUNT(DECODE(MOD(SUBSTR(ssn, 8, 1), 2),0, '여자')) count
+	FROM insa
+	GROUP BY buseo
+	HAVING COUNT(DECODE(MOD(SUBSTR(ssn, 8, 1), 2),0, '여자')) >= 5;
